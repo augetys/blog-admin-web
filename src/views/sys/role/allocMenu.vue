@@ -9,7 +9,6 @@
         node-key="id"
         highlight-current
         :props="defaultProps"
-        @check-change="checkChange"
       />
       <div style="margin-top: 20px;text-align: center">
         <el-button type="primary" @click="handleSave()">保存</el-button>
@@ -59,17 +58,6 @@ export default {
           })
         }, 100)
       })
-    },
-    checkChange(a, b, c) {
-      const anode = this.$refs.tree.getNode(a)
-      !anode.checked ? this.findChildren(anode.parent) : ''
-    },
-    findChildren(current) {
-      const fnode = this.$refs.tree.getNode(current)
-      if (!fnode.isLeaf) {
-        fnode.indeterminate = true
-        fnode.checked = true
-      }
     },
     handleSave() {
       // 获取全选和半选

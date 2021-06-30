@@ -21,17 +21,16 @@
         row-key="id"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column prop="name" label="菜单名称" width="200" align="center" />
-        <el-table-column prop="path" label="路径" align="center" width="200px" />
+        <el-table-column prop="name" label="菜单名称" align="center" />
+        <el-table-column prop="path" label="路径" align="center" />
         <el-table-column prop="icon" label="图标" align="center">
           <template slot-scope="scope">
             <svg-icon :icon-class="scope.row.icon" />
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center" width="120px" />
-        <el-table-column prop="sort" label="排序" align="center" width="120px" />
-        <el-table-column prop="createTime" label="设置" align="center" width="200px" />
-        <el-table-column label="操作" align="center" width="220px">
+        <el-table-column prop="createTime" label="创建时间" align="center" />
+        <el-table-column prop="sort" label="排序" align="center" />
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click="handleUpdate(scope.row)">编辑
             </el-button>
@@ -90,15 +89,10 @@
         </el-form-item>
         <el-form-item label="图标：" prop="icon">
           <el-input v-model="menu.icon" style="width: 250px" />
+          <svg-icon style="margin-left: 8px" :icon-class="menu.icon===null?'':menu.icon" />
         </el-form-item>
         <el-form-item label="排序：" prop="sort">
-          <el-input v-model="menu.sort" style="width: 250px" />
-        </el-form-item>
-        <el-form-item label="是否显示：">
-          <el-radio-group v-model="menu.isShow">
-            <el-radio :label="1">是</el-radio>
-            <el-radio :label="0">否</el-radio>
-          </el-radio-group>
+          <el-input v-model.number="menu.sort" style="width: 250px" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -153,7 +147,7 @@ export default {
         icon: { required: true, message: '请输入菜单图标', trigger: 'blur' },
         sort: [
           { required: true, message: '请输入菜单排序', trigger: 'blur' },
-          { type: 'number', required: true, message: '菜单排序必须为数字' }
+          { type: 'number', required: true, message: '菜单排序必须为数字', trigger: 'blur' }
         ]
       },
       defaultProps: {
