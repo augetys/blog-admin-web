@@ -86,6 +86,12 @@ export const asyncRoutes = [
         meta: { title: '菜单管理', icon: 'sys-menu' }
       },
       {
+        path: 'config',
+        name: '系统配置',
+        component: () => import('@/views/sys/config/index'),
+        meta: { title: '系统配置', icon: 'sys-config' }
+      },
+      {
         path: 'log',
         name: '操作日志',
         component: () => import('@/views/sys/log/index'),
@@ -121,6 +127,42 @@ export const asyncRoutes = [
         name: 'druid',
         component: () => import('@/views/monitor/druid/index'),
         meta: { title: 'druid', icon: 'monitor-druid' }
+      }
+    ]
+  },
+  {
+    path: '/blog',
+    component: Layout,
+    redirect: '/blog/article',
+    name: '博客管理',
+    meta: {
+      title: '博客管理',
+      icon: 'blog'
+    },
+    children: [
+      {
+        path: 'article',
+        name: '文章管理',
+        component: () => import('@/views/blog/article/index'),
+        meta: { title: '文章管理', icon: 'blog-article' }
+      },
+      {
+        path: 'category',
+        name: '分类管理',
+        component: () => import('@/views/blog/category/index'),
+        meta: { title: '分类管理', icon: 'blog-category' }
+      },
+      {
+        path: 'tag',
+        name: '标签管理',
+        component: () => import('@/views/blog/tag/index'),
+        meta: { title: '标签管理', icon: 'blog-tag' }
+      },
+      {
+        path: 'comment',
+        name: '评论管理',
+        component: () => import('@/views/blog/comment/index'),
+        meta: { title: '评论管理', icon: 'blog-comment' }
       }
     ]
   }
