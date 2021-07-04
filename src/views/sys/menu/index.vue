@@ -147,7 +147,7 @@ export default {
         icon: { required: true, message: '请输入菜单图标', trigger: 'blur' },
         sort: [
           { required: true, message: '请输入菜单排序', trigger: 'blur' },
-          { type: 'number', required: true, message: '菜单排序必须为数字', trigger: 'blur' }
+          { type: 'number', required: true, message: '菜单排序只能为自然数', trigger: 'blur' }
         ]
       },
       defaultProps: {

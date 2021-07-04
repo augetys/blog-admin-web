@@ -22,3 +22,26 @@ export function getTagList(data) {
     data: data
   })
 }
+
+export function updateArticle(data) {
+  return request({
+    url: '/blog/blogArticle/update',
+    method: 'post',
+    data: data
+  })
+}
+
+export function createArticle(data) {
+  return request({
+    url: '/blog/blogArticle/save',
+    method: 'post',
+    data: data
+  })
+}
+
+export function deleteArticle(id) {
+  return request({
+    url: '/blog/blogArticle/delete/' + id,
+    method: 'get'
+  })
+}

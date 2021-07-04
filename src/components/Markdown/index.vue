@@ -39,9 +39,6 @@ export default {
         width: this.isMobile ? '100%' : '100%',
         height: '0',
         tab: '\t',
-        counter: {
-          enable: true
-        },
         resize: {
           enable: true
         },
@@ -98,11 +95,14 @@ export default {
     },
     // 获取html
     getHtml: function() {
-      return this.vditor.getHTML()
+      return this.vditor.getValue()
     },
     setHtml: function(data) {
       // 后端将html转换为markdown后直接渲染
-      this.vditor.setValue(data)
+      this.$nextTick(() => {
+        // DOM现在更新了
+        localStorage.setItem('vditorvditor', data)
+      })
     },
     // 初始化编辑器，清空markdown和缓存
     initData: function() {

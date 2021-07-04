@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="博客标题">
-          <el-input v-model="listQuery.name" placeholder="博客标题" />
+          <el-input v-model="listQuery.title" placeholder="博客标题" />
         </el-form-item>
         <el-form-item label="分类名称">
           <el-select
@@ -40,13 +40,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="是否原创">
-          <el-select v-model="listQuery.status" placeholder="是否原创">
+          <el-select v-model="listQuery.status" clearable placeholder="是否原创">
             <el-option label="转载" value="0" />
             <el-option label="原创" value="1" />
           </el-select>
         </el-form-item>
         <el-form-item label="是否发布">
-          <el-select v-model="listQuery.status" placeholder="是否发布">
+          <el-select v-model="listQuery.status" clearable placeholder="是否发布">
             <el-option label="下架" value="0" />
             <el-option label="发布" value="1" />
           </el-select>
@@ -67,7 +67,17 @@
         </el-table-column>
         <el-table-column prop="title" label="标题" align="center" />
         <el-table-column prop="author" label="作者" align="center" />
-        <el-table-column prop="isOriginal" label="是否原创" align="center" />
+        <el-table-column prop="isOriginal" label="是否原创" align="center">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.isOriginal===1" type="success">原创</el-tag>
+            <el-tag v-if="scope.row.isOriginal===0" type="info">转载</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="分类" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.articleCategoryId }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -87,10 +97,130 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <!-- 添加或修改对话框 -->
+    <el-dialog
+      :title="isEdit?'编辑文章':'添加文章'"
+      :visible.sync="dialogFormVisible"
+      fullscreen
+    >
+      <el-form ref="form" :model="blog" :rules="rules">
+
+        <el-row>
+          <el-col :span="16">
+            <el-form-item label="标题" prop="title" :label-width="formLabelWidth">
+              <el-input v-model="blog.title" auto-complete="off" />
+            </el-form-item>
+
+            <el-form-item label="简介" :label-width="formLabelWidth">
+              <el-input v-model="blog.summary" auto-complete="off" />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="8">
+            <el-form-item label="封面" :label-width="formLabelWidth" />
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="6.5">
+            <el-form-item label="分类" :label-width="formLabelWidth" prop="articleCategoryId">
+              <el-select
+                v-model="blog.articleCategoryId"
+                size="small"
+                placeholder="请选择"
+                style="width:150px"
+              >
+                <el-option
+                  v-for="item in categoryOptions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6.5">
+            <el-form-item label="标签" label-width="80px" prop="tagId">
+              <el-select
+                v-model="blog.tagId"
+                multiple
+                size="small"
+                placeholder="请选择"
+                style="width:210px"
+                filterable
+              >
+                <el-option
+                  v-for="item in tagOptions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+
+        <el-row>
+          <el-col :span="6.5">
+            <el-form-item label="是否原创" :label-width="formLabelWidth" prop="isOriginal">
+              <el-radio-group v-model="blog.isOriginal" size="small">
+                <el-radio :label="1" border>原创</el-radio>
+                <el-radio :label="0" border>转载</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6.5">
+            <el-form-item label="文章评论" :label-width="formLabelWidth" prop="openComment">
+              <el-radio-group v-model="blog.openComment" size="small">
+                <el-radio :label="1" border>开启</el-radio>
+                <el-radio :label="0" border>关闭</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="4.5">
+            <el-form-item label="是否发布" :label-width="lineLabelWidth" prop="isPublish">
+              <el-radio-group v-model="blog.isPublish" size="small">
+                <el-radio :label="1" border>发布</el-radio>
+                <el-radio :label="0" border>下架</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-form-item v-if="blog.isOriginal===0" label="作者" :label-width="formLabelWidth" prop="author">
+          <el-input v-model="blog.author" auto-complete="off" />
+        </el-form-item>
+
+        <el-form-item v-if="blog.isOriginal===0" label="文章出处" :label-width="formLabelWidth">
+          <el-input v-model="blog.articlesPart" auto-complete="off" />
+        </el-form-item>
+
+        <el-form-item label="内容" :label-width="formLabelWidth" prop="content">
+          <MarkDown ref="editor" :content="blog.content" :height="465" />
+        </el-form-item>
+
+        <el-form-item style="float: right; margin-right: 20px;">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getArticleList, getCategoryList, getTagList } from '@/api/article'
+import {
+  createArticle,
+  deleteArticle,
+  getArticleList,
+  getCategoryList,
+  getTagList,
+  updateArticle
+} from '@/api/article'
+import MarkDown from '@/components/Markdown'
 
 const listQuery = {
   pageNum: 1,
@@ -98,7 +228,8 @@ const listQuery = {
   tagKeyword: '',
   categoryKeyword: '',
   publishKeyword: '',
-  originalKeyword: ''
+  originalKeyword: '',
+  title: ''
 }
 const defaultBlog = {
   id: null,
@@ -106,7 +237,7 @@ const defaultBlog = {
   summary: null,
   content: null,
   isPublish: null,
-  tagId: null,
+  tagId: '',
   cover: null,
   clickCount: null,
   isOriginal: null,
@@ -118,6 +249,9 @@ const defaultBlog = {
 }
 export default {
   name: 'Index',
+  components: {
+    MarkDown
+  },
   data() {
     return {
       listQuery: Object.assign({}, listQuery),
@@ -126,9 +260,37 @@ export default {
       listLoading: false,
       blog: Object.assign({}, defaultBlog),
       isEdit: false,
-      dialogVisible: false,
       categoryOptions: [],
-      tagOptions: []
+      tagOptions: [],
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+      lineLabelWidth: '120px',
+      rules: {
+        title: [
+          { required: true, message: '标题不能为空', trigger: 'blur' }
+        ],
+        categoryId: [
+          { required: true, message: '分类不能为空', trigger: 'blur' }
+        ],
+        tagId: [
+          { required: true, message: '标签不能为空', trigger: 'blur' }
+        ],
+        isPublish: [
+          { required: true, message: '发布字段不能为空', trigger: 'blur' },
+          { pattern: /^[0-9]\d*$/, message: '发布字段只能为自然数' }
+        ],
+        isOriginal: [
+          { required: true, message: '原创字段不能为空', trigger: 'blur' },
+          { pattern: /^[0-9]\d*$/, message: '原创字段只能为自然数' }
+        ],
+        openComment: [
+          { required: true, message: '网站评论不能为空', trigger: 'blur' },
+          { pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数' }
+        ],
+        content: [
+          { required: true, message: '内容不能为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
@@ -143,7 +305,21 @@ export default {
       })
     },
     handleAdd() {
-
+      this.isEdit = false
+      this.dialogFormVisible = true
+      this.blog = Object.assign({}, defaultBlog)
+      localStorage.setItem('vditorvditor', '')
+    },
+    handleUpdate(row) {
+      this.isEdit = true
+      this.dialogFormVisible = true
+      this.blog = Object.assign({}, row)
+      this.blog.tagId = row.tagId.split(',')
+      const that = this
+      this.$nextTick(() => {
+        // DOM现在更新了
+        that.$refs.editor.setHtml(that.blog.content) // 设置富文本内容
+      })
     },
     handleResetSearch() {
       this.listQuery = Object.assign({}, listQuery)
@@ -175,6 +351,61 @@ export default {
       const params = {}
       getTagList(params).then(response => {
         this.tagOptions = response.data
+      })
+    },
+    submitForm() {
+      this.blog.content = this.$refs.editor.getHtml()
+      this.blog.tagId = this.blog.tagId.join(',')
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.$confirm('是否要确认?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            if (this.isEdit) {
+              updateArticle(this.blog).then(response => {
+                this.$message({
+                  message: response.message,
+                  type: 'success'
+                })
+                this.dialogVisible = false
+                this.getList()
+              })
+            } else {
+              createArticle(this.blog).then(response => {
+                this.$message({
+                  message: response.message,
+                  type: 'success'
+                })
+                this.dialogVisible = false
+                this.getList()
+              })
+            }
+          })
+        } else {
+          this.$message({
+            message: '请填写正确的信息！',
+            type: 'error',
+            duration: 1000
+          })
+          return false
+        }
+      })
+    },
+    handleDelete(row) {
+      this.$confirm('是否要删除该文章?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteArticle(row.id).then(response => {
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
+          this.getList()
+        })
       })
     }
   }

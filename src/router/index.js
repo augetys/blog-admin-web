@@ -92,10 +92,16 @@ export const asyncRoutes = [
         meta: { title: '系统配置', icon: 'sys-config' }
       },
       {
-        path: 'log',
-        name: '操作日志',
-        component: () => import('@/views/sys/log/index'),
-        meta: { title: '操作日志', icon: 'sys-log' }
+        path: 'dict',
+        name: '字典管理',
+        component: () => import('@/views/sys/dict/index'),
+        meta: { title: '字典管理', icon: 'sys-log' }
+      },
+      {
+        path: 'code',
+        name: '代码生成',
+        component: () => import('@/views/sys/code/index'),
+        meta: { title: '代码生成', icon: 'sys-log' }
       },
       {
         path: 'allocMenu',
@@ -127,6 +133,30 @@ export const asyncRoutes = [
         name: 'druid',
         component: () => import('@/views/monitor/druid/index'),
         meta: { title: 'druid', icon: 'monitor-druid' }
+      }
+    ]
+  },
+  {
+    path: '/log',
+    component: Layout,
+    redirect: '/log/operation',
+    name: '日志管理',
+    meta: {
+      title: '日志管理',
+      icon: 'log'
+    },
+    children: [
+      {
+        path: 'operation',
+        name: '操作日志',
+        component: () => import('@/views/log/operation/index'),
+        meta: { title: '操作日志', icon: 'blog-article' }
+      },
+      {
+        path: 'category',
+        name: '异常日志',
+        component: () => import('@/views/log/exception/index'),
+        meta: { title: '异常日志', icon: 'blog-category' }
       }
     ]
   },
