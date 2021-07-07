@@ -5,7 +5,7 @@
         <el-form-item label="用户名">
           <el-input v-model="listQuery.username" placeholder="用户名" />
         </el-form-item>
-        <el-form-item label="昵称">
+        <el-form-item label="操作内容">
           <el-input v-model="listQuery.operation" placeholder="操作内容" />
         </el-form-item>
         <el-form-item label="操作时间">
@@ -33,15 +33,15 @@
         </el-table-column>
         <el-table-column prop="userName" label="操作人" align="center" />
         <el-table-column prop="url" label="请求接口" align="center" />
-        <el-table-column prop="type" label="请求方式" align="center" />
         <el-table-column prop="operation" label="操作名称" align="center" />
         <el-table-column prop="ip" label="IP" align="center" />
         <el-table-column prop="ipAddress" label="IP来源" align="center" />
-        <el-table-column prop="spendTime" label="请求耗时" align="center">
+        <el-table-column label="异常对象json格式" align="center">
           <template slot-scope="scope">
-            <el-tag>{{ scope.row.spendTime}} ms </el-tag>
+            <el-button type="primary" plain size="small" @click="handleDetail(scope.row)">查看详情</el-button>
           </template>
         </el-table-column>
+        <el-table-column prop="exceptionMessage" label="异常简单信息" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
       </el-table>
     </div>
@@ -54,12 +54,19 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <el-dialog
+      :title="'异常对象json格式'"
+      :visible.sync="dialogVisible"
+      width="45%"
+    >
+      <p>{{ exceptionLogDetail }}</p>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 
-import { getLogList } from '@/api/log'
+import { getExceptionLogList } from '@/api/log'
 
 const listQuery = {
   pageNum: 1,
@@ -76,7 +83,9 @@ export default {
       tableList: null,
       total: null,
       listLoading: false,
-      userId: null
+      userId: null,
+      dialogVisible: false,
+      exceptionLogDetail: null
     }
   },
   created() {
@@ -84,7 +93,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      getLogList(this.listQuery).then(response => {
+      getExceptionLogList(this.listQuery).then(response => {
         this.tableList = response.data.list
       })
     },
@@ -93,7 +102,7 @@ export default {
     },
     getList() {
       this.listLoading = true
-      getLogList(this.listQuery).then(response => {
+      getExceptionLogList(this.listQuery).then(response => {
         this.listLoading = false
         this.tableList = response.data.list
         this.total = response.data.total
@@ -107,6 +116,11 @@ export default {
     handleCurrentChange(val) {
       this.listQuery.pageNum = val
       this.getList()
+    },
+    handleDetail(row) {
+      this.dialogVisible = true
+      console.log(row)
+      this.exceptionLogDetail = row.exceptionJson
     }
   }
 }

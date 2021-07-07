@@ -99,8 +99,11 @@ export default {
     },
     setHtml: function(data) {
       // 后端将html转换为markdown后直接渲染
+      // DOM现在更新了
+      const that = this
       this.$nextTick(() => {
         // DOM现在更新了
+        that.initVditor()
         localStorage.setItem('vditorvditor', data)
       })
     },

@@ -29,6 +29,8 @@ import Layout from '@/layout'
  * constantRoutes
  * a base page that does not have permission requirements
  * all roles can be accessed
+ * 当在声明路由是 添加了 Affix 属性，则当前tag会被固定在 tags-view中（不可被删除）。
+ * 文档地址https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/tags-view.html#visitedviews-cachedviews
  */
 export const constantRoutes = [
   {
@@ -51,7 +53,7 @@ export const constantRoutes = [
       path: 'home',
       name: '首页',
       component: () => import('@/views/home/index'),
-      meta: { title: '首页', icon: 'home' }
+      meta: { title: '首页', icon: 'home', affix: true }
     }]
   }
 ]

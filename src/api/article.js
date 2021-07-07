@@ -7,6 +7,7 @@ export function getArticleList(data) {
     data: data
   })
 }
+
 export function getCategoryList(data) {
   return request({
     url: '/blog/blogCategory/findAll',
