@@ -1,51 +1,64 @@
 <template>
+  <!--  <div>-->
+  <!--    <el-upload-->
+  <!--      ref="pictureUpload"-->
+  <!--      :action="api"-->
+  <!--      list-type="picture-card"-->
+  <!--      :auto-upload="false"-->
+  <!--      accept="image/jpeg,image/jpg,image/png"-->
+  <!--      :before-upload="handleBeforeUpload"-->
+  <!--      :headers="importHeaders"-->
+  <!--    >-->
+  <!--      <i slot="default" class="el-icon-plus" />-->
+  <!--      <div slot="file" slot-scope="{file}">-->
+  <!--        <img-->
+  <!--          class="el-upload-list__item-thumbnail"-->
+  <!--          :src="file.url"-->
+  <!--          alt=""-->
+  <!--        >-->
+  <!--        <span class="el-upload-list__item-actions">-->
+  <!--          <span-->
+  <!--            class="el-upload-list__item-preview"-->
+  <!--            @click="handlePictureCardPreview(file)"-->
+  <!--          >-->
+  <!--            <i class="el-icon-zoom-in" />-->
+  <!--          </span>-->
+  <!--          <span-->
+  <!--            v-if="!disabled"-->
+  <!--            class="el-upload-list__item-delete"-->
+  <!--            @click="handleDownload(file)"-->
+  <!--          >-->
+  <!--            <i class="el-icon-download" />-->
+  <!--          </span>-->
+  <!--          <span-->
+  <!--            v-if="!disabled"-->
+  <!--            class="el-upload-list__item-delete"-->
+  <!--            @click="handleRemove(file)"-->
+  <!--          >-->
+  <!--            <i class="el-icon-delete" />-->
+  <!--          </span>-->
+  <!--        </span>-->
+  <!--      </div>-->
+  <!--    </el-upload>-->
+  <!--    <el-form-item>-->
+  <!--      <el-button type="primary" size="small" @click="uploadFile">上传<i class="el-icon-upload el-icon&#45;&#45;right" /></el-button>-->
+  <!--    </el-form-item>-->
+  <!--    <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">-->
+  <!--      <img width="100%" :src="dialogImageUrl" alt="">-->
+  <!--    </el-dialog>-->
+  <!--  </div>-->
+
   <div>
     <el-upload
-      ref="pictureUpload"
-      :action="api"
-      list-type="picture-card"
-      :auto-upload="false"
-      accept="image/jpeg,image/jpg,image/png"
-      :before-upload="handleBeforeUpload"
-      :headers="importHeaders"
+      class="upload-demo"
+      drag
+      action="https://jsonplaceholder.typicode.com/posts/"
+      multiple
     >
-      <i slot="default" class="el-icon-plus" />
-      <div slot="file" slot-scope="{file}">
-        <img
-          class="el-upload-list__item-thumbnail"
-          :src="file.url"
-          alt=""
-        >
-        <span class="el-upload-list__item-actions">
-          <span
-            class="el-upload-list__item-preview"
-            @click="handlePictureCardPreview(file)"
-          >
-            <i class="el-icon-zoom-in" />
-          </span>
-          <span
-            v-if="!disabled"
-            class="el-upload-list__item-delete"
-            @click="handleDownload(file)"
-          >
-            <i class="el-icon-download" />
-          </span>
-          <span
-            v-if="!disabled"
-            class="el-upload-list__item-delete"
-            @click="handleRemove(file)"
-          >
-            <i class="el-icon-delete" />
-          </span>
-        </span>
-      </div>
+      <i class="el-icon-upload" />
+      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件，且不超过2M</div>
     </el-upload>
-    <el-form-item>
-      <el-button size="small" type="primary" @click="uploadFile">立即上传</el-button>
-    </el-form-item>
-    <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
-      <img width="100%" :src="dialogImageUrl" alt="">
-    </el-dialog>
   </div>
 </template>
 

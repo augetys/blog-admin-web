@@ -112,17 +112,17 @@
             </el-form-item>
 
             <el-form-item label="简介" :label-width="formLabelWidth">
-              <el-input v-model="blog.summary" auto-complete="off" />
+              <el-input v-model="blog.summary" type="textarea" auto-complete="off" />
             </el-form-item>
           </el-col>
-
+        </el-row>
+        <el-row>
           <el-col :span="8">
-            <el-form-item label="封面" :label-width="formLabelWidth">
+            <el-form-item label="封面" :label-width="400">
               <UploadSlot />
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row>
           <el-col :span="6.5">
             <el-form-item label="分类" :label-width="formLabelWidth" prop="articleCategoryId">
