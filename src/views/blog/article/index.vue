@@ -117,7 +117,9 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="封面" :label-width="formLabelWidth" />
+            <el-form-item label="封面" :label-width="formLabelWidth">
+              <UploadSlot />
+            </el-form-item>
           </el-col>
         </el-row>
 
@@ -221,6 +223,7 @@ import {
   updateArticle
 } from '@/api/article'
 import MarkDown from '@/components/Markdown'
+import UploadSlot from '@/components/Upload/UploadPhotoSlot'
 
 const listQuery = {
   pageNum: 1,
@@ -250,7 +253,8 @@ const defaultBlog = {
 export default {
   name: 'Index',
   components: {
-    MarkDown
+    MarkDown,
+    UploadSlot
   },
   data() {
     return {

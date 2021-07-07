@@ -41,7 +41,7 @@ export default {
       }
       // 配置 server 接口地址
       editor.config.uploadFileName = 'file'
-      editor.config.uploadImgServer = process.env.VUE_APP_BASE_API + '/qiniu/upload/wangeditorPhoto'
+      editor.config.uploadImgServer = process.env.VUE_APP_BASE_API + '/qiniu/Upload/wangeditorPhoto'
       editor.config.uploadImgHeaders = {
         Authorization: 'Bearer  ' + getToken()
       }

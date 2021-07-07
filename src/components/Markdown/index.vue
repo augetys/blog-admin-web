@@ -67,7 +67,7 @@ export default {
             }
             const request = new XMLHttpRequest()
             // 图片上传路径
-            request.open('POST', process.env.VUE_APP_BASE_API + '/qiniu/upload/pictures')
+            request.open('POST', process.env.VUE_APP_BASE_API + '/qiniu/Upload/pictures')
             request.setRequestHeader('Authorization', 'Bearer  ' + getToken())
             request.onload = that.onloadCallback
             request.send(formData)
