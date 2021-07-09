@@ -14,3 +14,11 @@ export function updateMail(data) {
     data: data
   })
 }
+
+export function sendMailContent(data) {
+  return request({
+    url: '/sys/configEmail/send',
+    method: 'post',
+    data: data
+  })
+}

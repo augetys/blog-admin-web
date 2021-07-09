@@ -60,109 +60,6 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
   {
-    path: '/sys',
-    component: Layout,
-    redirect: '/sys/user',
-    name: '系统管理',
-    meta: {
-      title: '系统管理',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'user',
-        name: '用户管理',
-        component: () => import('@/views/sys/user/index'),
-        meta: { title: '用户管理', icon: 'sys-user' }
-      },
-      {
-        path: 'role',
-        name: '角色管理',
-        component: () => import('@/views/sys/role/index'),
-        meta: { title: '角色管理', icon: 'sys-role' }
-      },
-      {
-        path: 'menu',
-        name: '菜单管理',
-        component: () => import('@/views/sys/menu/index'),
-        meta: { title: '菜单管理', icon: 'sys-menu' }
-      },
-      {
-        path: 'config',
-        name: '系统配置',
-        component: () => import('@/views/sys/config/index'),
-        meta: { title: '系统配置', icon: 'sys-config' }
-      },
-      {
-        path: 'dict',
-        name: '字典管理',
-        component: () => import('@/views/sys/dict/index'),
-        meta: { title: '字典管理', icon: 'sys-log' }
-      },
-      {
-        path: 'code',
-        name: '代码生成',
-        component: () => import('@/views/sys/code/index'),
-        meta: { title: '代码生成', icon: 'sys-log' }
-      },
-      {
-        path: 'allocMenu',
-        name: '分配菜单',
-        component: () => import('@/views/sys/role/allocMenu'),
-        meta: { title: '分配菜单', icon: '' },
-        hidden: true
-      }
-    ]
-  },
-  {
-    path: '/monitor',
-    component: Layout,
-    redirect: '/monitor/system',
-    name: '监控中心',
-    meta: {
-      title: '监控中心',
-      icon: 'monitor'
-    },
-    children: [
-      {
-        path: 'system',
-        name: '服务器监控',
-        component: () => import('@/views/monitor/system/index'),
-        meta: { title: '服务器监控', icon: 'monitor-system' }
-      },
-      {
-        path: 'druid',
-        name: 'druid',
-        component: () => import('@/views/monitor/druid/index'),
-        meta: { title: 'druid', icon: 'monitor-druid' }
-      }
-    ]
-  },
-  {
-    path: '/log',
-    component: Layout,
-    redirect: '/log/operation',
-    name: '日志管理',
-    meta: {
-      title: '日志管理',
-      icon: 'log'
-    },
-    children: [
-      {
-        path: 'operation',
-        name: '操作日志',
-        component: () => import('@/views/log/operation/index'),
-        meta: { title: '操作日志', icon: 'blog-article' }
-      },
-      {
-        path: 'category',
-        name: '异常日志',
-        component: () => import('@/views/log/exception/index'),
-        meta: { title: '异常日志', icon: 'blog-category' }
-      }
-    ]
-  },
-  {
     path: '/blog',
     component: Layout,
     redirect: '/blog/article',
@@ -195,6 +92,139 @@ export const asyncRoutes = [
         name: '评论管理',
         component: () => import('@/views/blog/comment/index'),
         meta: { title: '评论管理', icon: 'blog-comment' }
+      }
+    ]
+  },
+  {
+    path: '/tool',
+    component: Layout,
+    redirect: '/tool/email',
+    name: '系统工具',
+    meta: {
+      title: '系统工具',
+      icon: 'tool'
+    },
+    children: [
+      {
+        path: 'email',
+        name: '邮件',
+        component: () => import('@/views/tool/email/index'),
+        meta: { title: '邮件', icon: 'tool-mail' }
+      },
+      {
+        path: 'code',
+        name: '代码生成',
+        component: () => import('@/views/tool/code/index'),
+        meta: { title: '代码生成', icon: 'tool-code' }
+      },
+    ]
+  },
+  {
+    path: '/resource',
+    component: Layout,
+    redirect: '/resource/qiniu',
+    name: '资源管理',
+    meta: {
+      title: '资源管理',
+      icon: 'resource'
+    },
+    children: [
+      {
+        path: 'qiniu',
+        name: '七牛云',
+        component: () => import('@/views/resource/qiniu/index'),
+        meta: { title: '七牛云', icon: 'blog-article' }
+      },
+      {
+        path: 'localStorage',
+        name: '本地存储',
+        component: () => import('@/views/resource/localStorage/index'),
+        meta: { title: '本地存储', icon: 'blog-category' }
+      }
+    ]
+  },
+  {
+    path: '/monitor',
+    component: Layout,
+    redirect: '/monitor/system',
+    name: '监控中心',
+    meta: {
+      title: '监控中心',
+      icon: 'monitor'
+    },
+    children: [
+      {
+        path: 'system',
+        name: '服务器监控',
+        component: () => import('@/views/monitor/system/index'),
+        meta: { title: '服务器监控', icon: 'monitor-system' }
+      },
+      {
+        path: 'druid',
+        name: 'druid',
+        component: () => import('@/views/monitor/druid/index'),
+        meta: { title: 'druid', icon: 'monitor-druid' }
+      },
+      {
+        path: 'operation',
+        name: '操作日志',
+        component: () => import('@/views/monitor/operation/index'),
+        meta: { title: '操作日志', icon: 'monitor-operation' }
+      },
+      {
+        path: 'exception',
+        name: '异常日志',
+        component: () => import('@/views/monitor/exception/index'),
+        meta: { title: '异常日志', icon: 'monitor-exception' }
+      }
+    ]
+  },
+  {
+    path: '/sys',
+    component: Layout,
+    redirect: '/sys/user',
+    name: '系统管理',
+    meta: {
+      title: '系统管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'user',
+        name: '用户管理',
+        component: () => import('@/views/sys/user/index'),
+        meta: { title: '用户管理', icon: 'sys-user' }
+      },
+      {
+        path: 'role',
+        name: '角色管理',
+        component: () => import('@/views/sys/role/index'),
+        meta: { title: '角色管理', icon: 'sys-role' }
+      },
+      {
+        path: 'menu',
+        name: '菜单管理',
+        component: () => import('@/views/sys/menu/index'),
+        meta: { title: '菜单管理', icon: 'sys-menu' }
+      },
+      {
+        path: 'task',
+        name: '定时任务',
+        component: () => import('@/views/sys/task/index'),
+        meta: { title: '定时任务', icon: 'sys-task' }
+      },
+      {
+        path: 'dict',
+        name: '字典管理',
+        component: () => import('@/views/sys/dict/index'),
+        meta: { title: '字典管理', icon: 'sys-dict' }
+      },
+      {
+        path: 'allocMenu',
+        name: '分配菜单',
+        component: () => import('@/views/sys/role/allocMenu'),
+        meta: { title: '分配菜单', icon: '' },
+        hidden: true
       }
     ]
   }

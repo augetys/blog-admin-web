@@ -118,8 +118,26 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="封面" :label-width="400">
-              <UploadSlot />
+            <el-form-item label="封面" :label-width="formLabelWidth">
+              <el-upload
+                class="avatar-uploader"
+                action="#"
+                :show-file-list="false"
+                :on-change="handleCrop"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="blog.cover" :src="blog.cover" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
+              <!-- 剪裁组件弹窗 -->
+              <cropperImage
+                :dialog-visible="showCropper"
+                :cropper-option="cropperOption"
+                :file-size="fileSize"
+                :cropper-style="cropperStyle"
+                @close="showCropper=false"
+                @uploadCropper="uploadImg"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -151,6 +169,7 @@
                 placeholder="请选择"
                 style="width:210px"
                 filterable
+                :multiple-limit="limit"
               >
                 <el-option
                   v-for="item in tagOptions"
@@ -223,7 +242,9 @@ import {
   updateArticle
 } from '@/api/article'
 import MarkDown from '@/components/Markdown'
-import UploadSlot from '@/components/Upload/UploadPhotoSlot'
+import CropperImage from '@/components/Upload/CropperImage'
+import { getToken } from '@/utils/auth'
+import { uploadPhoto } from '@/api/file'
 
 const listQuery = {
   pageNum: 1,
@@ -254,7 +275,7 @@ export default {
   name: 'Index',
   components: {
     MarkDown,
-    UploadSlot
+    CropperImage
   },
   data() {
     return {
@@ -269,6 +290,19 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: '120px',
       lineLabelWidth: '120px',
+      showCropper: false, // 显示裁剪弹窗
+      canCropper: false,
+      fileSize: 2, // 限制文件上传大小
+      cropperOption: {
+        img: '',
+        autoCropWidth: 375,
+        autoCropHeight: 176
+      },
+      cropperStyle: {
+        width: '390px',
+        height: '290px'
+      },
+      limit: 5,
       rules: {
         title: [
           { required: true, message: '标题不能为空', trigger: 'blur' }
@@ -373,7 +407,7 @@ export default {
                   message: response.message,
                   type: 'success'
                 })
-                this.dialogVisible = false
+                this.dialogFormVisible = false
                 this.getList()
               })
             } else {
@@ -382,7 +416,7 @@ export default {
                   message: response.message,
                   type: 'success'
                 })
-                this.dialogVisible = false
+                this.dialogFormVisible = false
                 this.getList()
               })
             }
@@ -411,11 +445,70 @@ export default {
           this.getList()
         })
       })
+    },
+    handleCrop(file) {
+      // 点击弹出剪裁框
+      this.$nextTick(() => {
+        if (this.canCropper) {
+          this.cropperOption.img = window.URL.createObjectURL(file.raw)
+          this.showCropper = this.canCropper
+        }
+      })
+    },
+    beforeAvatarUpload(file) {
+      // 上传前校验
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传图片只能是 JPG/PNG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2 MB!')
+      }
+      // 校验通过后显示裁剪框
+      this.canCropper = isJPG && isLt2M
+      return false
+    },
+    // 自定义上传方法
+    uploadImg(file, data) {
+      const fileFormData = new FormData()
+      fileFormData.append('file', file)
+      uploadPhoto(fileFormData, this).then(res => {
+        this.blog.cover = res.data.url
+        this.showCropper = false
+        this.$message({
+          message: res.message,
+          type: 'success'
+        })
+      })
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style>
+  /*对公共组件样式修改，未加上scoped*/
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 375px;
+    height: 176px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 375px;
+    height: 176px;
+    display: block;
+  }
 </style>

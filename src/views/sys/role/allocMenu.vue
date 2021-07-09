@@ -5,7 +5,6 @@
         ref="tree"
         :data="menuTreeList"
         show-checkbox
-        default-expand-all
         node-key="id"
         highlight-current
         :props="defaultProps"

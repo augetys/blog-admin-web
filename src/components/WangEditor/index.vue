@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <div id="editor" />
-    <el-button type="primary" class="btn" @click="getEditorData">获取当前内容</el-button>
   </div>
 </template>
 <script>
@@ -27,11 +26,6 @@ export default {
     this.editor = null
   },
   methods: {
-    getEditorData() {
-      // 通过代码获取编辑器内容
-      const data = this.editor.txt.html()
-      alert(data)
-    },
     init() {
       // eslint-disable-next-line new-cap
       const editor = new wangEditor(`#editor`)
