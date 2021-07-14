@@ -36,7 +36,7 @@
         <el-table-column prop="operation" label="操作名称" align="center" />
         <el-table-column prop="ip" label="IP" align="center" />
         <el-table-column prop="ipAddress" label="IP来源" align="center" />
-        <el-table-column label="异常对象json格式" align="center">
+        <el-table-column label="异常详情" align="center">
           <template slot-scope="scope">
             <el-button type="primary" plain size="small" @click="handleDetail(scope.row)">查看详情</el-button>
           </template>
@@ -55,11 +55,11 @@
       @current-change="handleCurrentChange"
     />
     <el-dialog
-      :title="'异常对象json格式'"
+      :title="'异常详情'"
       :visible.sync="dialogVisible"
-      width="45%"
+      width="85%"
     >
-      <p>{{ exceptionLogDetail }}</p>
+      <pre v-highlightjs="exceptionLogDetail"><code class="java" /></pre>
     </el-dialog>
   </div>
 </template>
@@ -119,7 +119,6 @@ export default {
     },
     handleDetail(row) {
       this.dialogVisible = true
-      console.log(row)
       this.exceptionLogDetail = row.exceptionJson
     }
   }

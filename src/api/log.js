@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getLogList(data) {
   return request({
-    url: '/resource/operation/list',
+    url: '/log/operation/list',
     method: 'post',
     data: data
   })
@@ -10,7 +10,7 @@ export function getLogList(data) {
 
 export function getExceptionLogList(data) {
   return request({
-    url: '/resource/sysExceptionLog/list',
+    url: '/log/exception/list',
     method: 'post',
     data: data
   })

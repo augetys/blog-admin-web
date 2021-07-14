@@ -209,9 +209,9 @@ export const asyncRoutes = [
       },
       {
         path: 'task',
-        name: '定时任务',
+        name: '任务调度',
         component: () => import('@/views/sys/task/index'),
-        meta: { title: '定时任务', icon: 'sys-task' }
+        meta: { title: '任务调度', icon: 'sys-task' }
       },
       {
         path: 'dict',
@@ -224,6 +224,13 @@ export const asyncRoutes = [
         name: '分配菜单',
         component: () => import('@/views/sys/role/allocMenu'),
         meta: { title: '分配菜单', icon: '' },
+        hidden: true
+      },
+      {
+        path: 'dictDetail',
+        name: '字典详情',
+        component: () => import('@/views/sys/dict/dictDetail'),
+        meta: { title: '字典详情', icon: '' },
         hidden: true
       }
     ]
