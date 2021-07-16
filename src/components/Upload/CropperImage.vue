@@ -40,10 +40,7 @@
         />
       </div>
       <div class="preview-box">
-        <div class="preview-title">
-          <span>预览</span>
-          <span class="preveiw-upload" @click="upload">重新上传</span>
-        </div>
+        <div class="preview-title" />
         <input
           ref="upload"
           type="file"
@@ -65,8 +62,13 @@
       </div>
     </div>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" :loading="loading" @click="finish">上传</el-button>
+      <!--      <el-button size="mini" @click="close">取 消</el-button>-->
+      <el-button type="primary" :loading="loading" size="small " @click="upload">选择封面</el-button>
+      <el-button type="danger" :loading="loading" size="small " icon="el-icon-zoom-in" @click="changeScale(1)">放大</el-button>
+      <el-button type="danger" :loading="loading" size="small " icon="el-icon-zoom-out" @click="changeScale(-1)">缩小</el-button>
+      <el-button type="danger" :loading="loading" size="small " @click="rotateLeft">↺ 左旋转</el-button>
+      <el-button type="danger" :loading="loading" size="small " @click="rotateRight">↻ 右旋转</el-button>
+      <el-button type="primary" :loading="loading" size="small " icon="el-icon-upload" @click="finish">上传</el-button>
     </div>
   </el-dialog>
 </template>
@@ -200,6 +202,19 @@ export default {
     },
     close() {
       this.$emit('close')
+    },
+    // 图片缩放
+    changeScale(num) {
+      num = num || 1
+      this.$refs.cropper.changeScale(num)
+    },
+    // 向左旋转
+    rotateLeft() {
+      this.$refs.cropper.rotateLeft()
+    },
+    // 向右旋转
+    rotateRight() {
+      this.$refs.cropper.rotateRight()
     }
   }
 }

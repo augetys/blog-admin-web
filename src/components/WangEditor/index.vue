@@ -6,13 +6,12 @@
 <script>
 // 引入 wangEditor
 import wangEditor from 'wangeditor'
-import { getToken } from '@/utils/auth'
+import { uploadPhotosToQiniu } from '@/api/file'
 
 export default {
   data() {
     return {
-      editor: null,
-      editorData: ''
+      editor: null
     }
   },
   mounted() {
@@ -29,22 +28,21 @@ export default {
     init() {
       // eslint-disable-next-line new-cap
       const editor = new wangEditor(`#editor`)
-      // 配置 onchange 回调函数，将数据同步到 vue 中
-      editor.config.onchange = (newHtml) => {
-        this.editorData = newHtml
+      editor.config.zIndex = 10
+      // 自定义图片上传
+      editor.config.customUploadImg = function(files, insert) {
+        // files 是 input 中选中的文件列表
+        // insert 是获取图片 url 后，插入到编辑器的方法
+        const formData = new FormData()
+        for (let i = 0; i < files.length; i++) {
+          formData.append('file', files[i], files[i].name)
+        }
+        uploadPhotosToQiniu(formData, this).then(res => {
+          for (let i = 0; i < res.data.length; i++) {
+            insert(res.data[i].url)
+          }
+        })
       }
-      // 配置 server 接口地址
-      editor.config.uploadFileName = 'file'
-      editor.config.uploadImgServer = process.env.VUE_APP_BASE_API + '/qiniu/Upload/wangeditorPhoto'
-      editor.config.uploadImgHeaders = {
-        Authorization: 'Bearer  ' + getToken()
-      }
-      // 图片大小限制
-      editor.config.uploadImgMaxSize = 2 * 1024 * 1024 // 2M
-      // 图片类型限制
-      editor.config.uploadImgAccept = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
-      // 一次最多上传 5 个图片
-      editor.config.uploadImgMaxLength = 5
       // 创建编辑器
       editor.create()
       this.editor = editor

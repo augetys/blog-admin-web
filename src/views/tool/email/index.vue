@@ -115,6 +115,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.send.tos = this.send.tos.split(',')
         sendMailContent(this.send).then(response => {
           this.$message({
             message: response.message,

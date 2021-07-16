@@ -243,7 +243,6 @@ import {
 } from '@/api/article'
 import MarkDown from '@/components/Markdown'
 import CropperImage from '@/components/Upload/CropperImage'
-import { getToken } from '@/utils/auth'
 import { uploadPhoto } from '@/api/file'
 
 const listQuery = {

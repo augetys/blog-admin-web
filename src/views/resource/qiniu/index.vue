@@ -1,11 +1,17 @@
 <template>
-
+  <div />
 </template>
 
 <script>
-  export default {
-    name: 'index'
+export default {
+  name: 'Index',
+  data() {
+
+  },
+  methods: {
+
   }
+}
 </script>
 
 <style scoped>
