@@ -55,7 +55,15 @@
         </el-form>
       </el-tab-pane>
 
-      <el-tab-pane label="配置说明" />
+      <el-tab-pane label="配置说明">
+        <pre class="my-code">
+        # 邮件服务器的SMTP地址，可选，默认为smtp
+        # 邮件服务器的SMTP端口，可选，默认465或者25
+        # 发件人（必须正确，否则发送失败）
+        # 用户名，默认为发件人邮箱前缀
+        # 密码（注意，某些邮箱需要为SMTP服务单独设置密码，如QQ和163等等）
+        </pre>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -63,6 +71,7 @@
 <script>
 import { getMailConfig, sendMailContent, updateMail } from '@/api/config'
 import WangEditor from '@/components/WangEditor'
+
 export default {
   name: 'Index',
   components: {
@@ -129,5 +138,8 @@ export default {
 </script>
 
 <style scoped>
-
+  .my-code {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    line-height: 40px;
+  }
 </style>
