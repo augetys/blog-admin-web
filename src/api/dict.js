@@ -31,10 +31,41 @@ export function deleteDict(id) {
   })
 }
 
-export function getDetailById(id) {
+export function getDetailById(data) {
   return request({
-    url: '/sys/dict/getDetailById/' + id,
+    url: '/sys/dict/getDetailById',
+    method: 'post',
+    data: data
+  })
+}
+
+export function updateDictDetail(data) {
+  return request({
+    url: '/sys/dictDetail/update',
+    method: 'post',
+    data: data
+  })
+}
+
+export function createDictDetail(data) {
+  return request({
+    url: '/sys/dictDetail/save',
+    method: 'post',
+    data: data
+  })
+}
+
+export function deleteDictDetail(id) {
+  return request({
+    url: '/sys/dictDetail/delete/' + id,
     method: 'get'
   })
 }
 
+export function updateStatus(data) {
+  return request({
+    url: '/sys/dict/updateStatus',
+    method: 'post',
+    data: data
+  })
+}

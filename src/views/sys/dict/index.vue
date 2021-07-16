@@ -21,11 +21,10 @@
       >
         <el-table-column prop="name" label="字典名称" align="center">
           <template slot-scope="scope">
-            <a class="self_peoNum" @click="viewDetails(scope.row)">{{ scope.row.name }}</a>
+            <el-tag type="success" style="cursor: pointer" @click="viewDetails(scope.row)">{{ scope.row.name }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="description" label="描述" align="center" />
-        <el-table-column prop="sort" label="排序" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -61,9 +60,6 @@
         </el-form-item>
         <el-form-item label="描述：" prop="description">
           <el-input v-model="dict.description" style="width: 250px" />
-        </el-form-item>
-        <el-form-item label="排序：" prop="sort">
-          <el-input v-model.number="dict.sort" style="width: 250px" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -205,7 +201,7 @@ export default {
       })
     },
     viewDetails(row) {
-      this.$router.push({ path: '/sys/dictDetail', query: { dictId: row.id }})
+      this.$router.push({ path: '/sys/dictDetail', query: { dictId: row.id, dictName: row.name }})
     }
   }
 }
