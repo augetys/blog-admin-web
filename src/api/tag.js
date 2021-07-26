@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getTagList(data) {
   return request({
-    url: '/blog/blogTag/list',
+    url: '/blog/tag/list',
     method: 'post',
     data: data
   })
@@ -10,7 +10,7 @@ export function getTagList(data) {
 
 export function updateTag(data) {
   return request({
-    url: '/blog/blogTag/update',
+    url: '/blog/tag/update',
     method: 'post',
     data: data
   })
@@ -18,7 +18,7 @@ export function updateTag(data) {
 
 export function createTag(data) {
   return request({
-    url: '/blog/blogTag/save',
+    url: '/blog/tag/save',
     method: 'post',
     data: data
   })
@@ -26,7 +26,7 @@ export function createTag(data) {
 
 export function deleteTag(id) {
   return request({
-    url: '/blog/blogTag/delete/' + id,
+    url: '/blog/tag/delete/' + id,
     method: 'get'
   })
 }

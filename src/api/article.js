@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getArticleList(data) {
   return request({
-    url: '/blog/blogArticle/list',
+    url: '/blog/article/list',
     method: 'post',
     data: data
   })
@@ -10,7 +10,7 @@ export function getArticleList(data) {
 
 export function getCategoryList(data) {
   return request({
-    url: '/blog/blogCategory/findAll',
+    url: '/blog/article/findAll',
     method: 'post',
     data: data
   })
@@ -18,7 +18,7 @@ export function getCategoryList(data) {
 
 export function getTagList(data) {
   return request({
-    url: '/blog/blogTag/findAll',
+    url: '/blog/tag/findAll',
     method: 'post',
     data: data
   })
@@ -26,7 +26,7 @@ export function getTagList(data) {
 
 export function updateArticle(data) {
   return request({
-    url: '/blog/blogArticle/update',
+    url: '/blog/article/update',
     method: 'post',
     data: data
   })
@@ -34,7 +34,7 @@ export function updateArticle(data) {
 
 export function createArticle(data) {
   return request({
-    url: '/blog/blogArticle/save',
+    url: '/blog/article/save',
     method: 'post',
     data: data
   })
@@ -42,7 +42,7 @@ export function createArticle(data) {
 
 export function deleteArticle(id) {
   return request({
-    url: '/blog/blogArticle/delete/' + id,
+    url: '/blog/article/delete/' + id,
     method: 'get'
   })
 }

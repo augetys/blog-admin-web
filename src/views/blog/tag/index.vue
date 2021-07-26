@@ -20,6 +20,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="name" label="标签名" align="center" />
+        <el-table-column prop="icon" label="标签图标" align="center" />
         <el-table-column prop="sort" label="排序" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
@@ -54,6 +55,9 @@
       >
         <el-form-item label="标签名称：" prop="name">
           <el-input v-model="tag.name" style="width: 250px" />
+        </el-form-item>
+        <el-form-item label="标签图标：" prop="name">
+          <el-input v-model="tag.icon" style="width: 250px" />
         </el-form-item>
         <el-form-item label="排序：" prop="sort">
           <el-input v-model.number="tag.sort" style="width: 250px" />
