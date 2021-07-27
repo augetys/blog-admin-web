@@ -243,7 +243,7 @@ import {
 } from '@/api/article'
 import MarkDown from '@/components/Markdown'
 import CropperImage from '@/components/Upload/CropperImage'
-import { uploadPhoto } from '@/api/file'
+import { uploadPhotosToQiniu } from '@/api/file'
 
 const listQuery = {
   pageNum: 1,
@@ -472,7 +472,8 @@ export default {
     uploadImg(file, data) {
       const fileFormData = new FormData()
       fileFormData.append('file', file)
-      uploadPhoto(fileFormData, this).then(res => {
+      uploadPhotosToQiniu(fileFormData, this).then(res => {
+        console.log(res)
         this.blog.cover = res.data.url
         this.showCropper = false
         this.$message({

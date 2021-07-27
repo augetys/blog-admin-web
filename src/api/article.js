@@ -10,7 +10,7 @@ export function getArticleList(data) {
 
 export function getCategoryList(data) {
   return request({
-    url: '/blog/article/findAll',
+    url: '/blog/category/findAll',
     method: 'post',
     data: data
   })

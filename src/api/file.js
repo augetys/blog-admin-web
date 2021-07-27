@@ -18,7 +18,7 @@ export function uploadPhotos(data) {
 
 export function uploadPhotosToQiniu(data) {
   return request({
-    url: '/resource/qiniu/files',
+    url: '/resource/qiniu/file',
     method: 'post',
     data: data
   })
@@ -26,7 +26,7 @@ export function uploadPhotosToQiniu(data) {
 
 export function uploadPhotoToQiniu(data) {
   return request({
-    url: '/resource/qiniu/file',
+    url: '/resource/qiniu/files',
     method: 'post',
     data: data
   })
