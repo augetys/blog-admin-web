@@ -2,8 +2,8 @@
   <div>
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="分类名">
-          <el-input v-model="listQuery.name" placeholder="分类名" />
+        <el-form-item label="轮播图标题">
+          <el-input v-model="listQuery.name" placeholder="轮播图标题" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -19,9 +19,13 @@
             {{ scope.$index+1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="分类名" align="center" />
-        <el-table-column prop="content" label="分类介绍" align="center" />
-        <el-table-column prop="sort" label="排序" align="center" />
+        <el-table-column prop="title" label="轮播图标题" align="center" />
+        <el-table-column prop="targetUrl" label="跳转地址" align="center" />
+        <el-table-column prop="imageUrl" label="图片" align="center">
+          <template slot-scope="scope">
+            <img :src="scope.row.imageUrl" style="width: 50px;height: 50px" alt="图片">
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -42,49 +46,54 @@
       @current-change="handleCurrentChange"
     />
     <el-dialog
-      :title="isEdit?'编辑分类':'添加分类'"
+      :title="isEdit?'编辑轮播图':'添加轮播图'"
       :visible.sync="dialogVisible"
       width="45%"
     >
       <el-form
-        ref="categoryForm"
-        :model="category"
+        ref="loopForm"
+        :model="loop"
         label-width="150px"
         size="small"
         :rules="rules"
       >
-        <el-form-item label="分类名称：" prop="name">
-          <el-input v-model="category.name" style="width: 250px" />
+        <el-form-item label="标题：" prop="title">
+          <el-input v-model="loop.title" style="width: 250px" />
         </el-form-item>
-        <el-form-item label="分类介绍：" prop="content">
-          <el-input v-model="category.content" style="width: 250px" />
+
+        <el-form-item label="图片：" prop="imageUrl">
+          <el-input v-model="loop.imageUrl" style="width: 250px" />
+        </el-form-item>
+
+        <el-form-item label="跳转地址：" prop="targetUrl">
+          <el-input v-model="loop.targetUrl" style="width: 250px" />
         </el-form-item>
         <el-form-item label="排序：" prop="sort">
-          <el-input v-model.number="category.sort" style="width: 250px" />
+          <el-input v-model.number="loop.sort" style="width: 250px" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="small" @click="handleDialogConfirm('categoryForm')">确 定</el-button>
+        <el-button type="primary" size="small" @click="handleDialogConfirm('loopForm')">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-
-import { createCategory, deleteCategory, getCategoryList, updateCategory } from '@/api/category'
+import { createLoop, deleteLoop, getLoopList, updateLoop } from '@/api/loop'
 
 const listQuery = {
   pageNum: 1,
   pageSize: 10,
   name: null
 }
-const defaultCategory = {
+const defaultLoop = {
   id: null,
-  name: null,
-  content: null,
-  sort: null
+  title: null,
+  sort: null,
+  targetUrl: null,
+  imageUrl: null
 }
 
 export default {
@@ -95,16 +104,24 @@ export default {
       tableList: null,
       total: null,
       listLoading: false,
-      category: Object.assign({}, defaultCategory),
+      loop: Object.assign({}, defaultLoop),
       isEdit: false,
       dialogVisible: false,
       rules: {
-        name: [
-          { required: true, message: '请输入分类名称', trigger: 'blur' },
+        title: [
+          { required: true, message: '请输入标题', trigger: 'blur' },
+          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+        ],
+        targetUrl: [
+          { required: true, message: '请输入跳转地址', trigger: 'blur' },
+          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+        ],
+        imageUrl: [
+          { required: true, message: '请输入图片地址', trigger: 'blur' },
           { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
         ],
         sort: [
-          { required: true, message: '请输入分类排序', trigger: 'blur' },
+          { required: true, message: '请输入排序', trigger: 'blur' },
           { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' }
         ]
       }
@@ -115,7 +132,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      getCategoryList(this.listQuery).then(response => {
+      getLoopList(this.listQuery).then(response => {
         this.tableList = response.data.list
       })
     },
@@ -125,11 +142,11 @@ export default {
     handleAdd() {
       this.isEdit = false
       this.dialogVisible = true
-      this.category = Object.assign({}, defaultCategory)
+      this.loop = Object.assign({}, defaultLoop)
     },
     getList() {
       this.listLoading = true
-      getCategoryList(this.listQuery).then(response => {
+      getLoopList(this.listQuery).then(response => {
         this.listLoading = false
         this.tableList = response.data.list
         this.total = response.data.total
@@ -144,8 +161,8 @@ export default {
       this.listQuery.pageNum = val
       this.getList()
     },
-    handleDialogConfirm(categoryForm) {
-      this.$refs[categoryForm].validate((valid) => {
+    handleDialogConfirm(loopForm) {
+      this.$refs[loopForm].validate((valid) => {
         if (valid) {
           this.$confirm('是否要确认?', '提示', {
             confirmButtonText: '确定',
@@ -153,7 +170,7 @@ export default {
             type: 'warning'
           }).then(() => {
             if (this.isEdit) {
-              updateCategory(this.category).then(response => {
+              updateLoop(this.loop).then(response => {
                 this.$message({
                   message: response.message,
                   type: 'success'
@@ -162,7 +179,7 @@ export default {
                 this.getList()
               })
             } else {
-              createCategory(this.category).then(response => {
+              createLoop(this.loop).then(response => {
                 this.$message({
                   message: response.message,
                   type: 'success'
@@ -185,15 +202,15 @@ export default {
     handleUpdate(row) {
       this.isEdit = true
       this.dialogVisible = true
-      this.category = Object.assign({}, row)
+      this.loop = Object.assign({}, row)
     },
     handleDelete(row) {
-      this.$confirm('是否要删除该分类?', '提示', {
+      this.$confirm('是否要删除该轮播?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteCategory(row.id).then(response => {
+        deleteLoop(row.id).then(response => {
           this.$message({
             type: 'success',
             message: response.message
@@ -206,6 +223,32 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+  /*对公共组件样式修改，未加上scoped*/
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
 
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 595px;
+    height: 200px;
+    line-height: 200px;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 170px;
+    height: 120px;
+    display: block;
+  }
 </style>

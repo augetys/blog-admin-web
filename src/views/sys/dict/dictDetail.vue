@@ -127,7 +127,7 @@ export default {
         ],
         sort: [
           { required: true, message: '请输入排序', trigger: 'blur' },
-          { type: 'number', required: true, message: '排序只能为自然数', trigger: 'blur' }
+          { type: 'number', required: true, message: '排序只能为数字', trigger: 'blur' }
         ]
       }
     }

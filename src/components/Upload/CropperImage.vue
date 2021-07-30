@@ -64,8 +64,10 @@
     <div slot="footer" class="dialog-footer">
       <!--      <el-button size="mini" @click="close">取 消</el-button>-->
       <el-button type="primary" :loading="loading" size="small " @click="upload">选择封面</el-button>
-      <el-button type="danger" :loading="loading" size="small " icon="el-icon-zoom-in" @click="changeScale(1)">放大</el-button>
-      <el-button type="danger" :loading="loading" size="small " icon="el-icon-zoom-out" @click="changeScale(-1)">缩小</el-button>
+      <!--      <el-button type="danger" :loading="loading" size="small " icon="el-icon-zoom-in" @click="changeScale(1)">放大-->
+      <!--      </el-button>-->
+      <!--      <el-button type="danger" :loading="loading" size="small " icon="el-icon-zoom-out" @click="changeScale(-1)">缩小-->
+      <!--      </el-button>-->
       <el-button type="danger" :loading="loading" size="small " @click="rotateLeft">↺ 左旋转</el-button>
       <el-button type="danger" :loading="loading" size="small " @click="rotateRight">↻ 右旋转</el-button>
       <el-button type="primary" :loading="loading" size="small " icon="el-icon-upload" @click="finish">上传</el-button>
@@ -74,6 +76,7 @@
 </template>
 <script>
 import { VueCropper } from 'vue-cropper'
+
 export default {
   name: 'ImageCropper',
   components: {
@@ -86,11 +89,13 @@ export default {
     },
     cropperOption: {
       type: Object,
-      default: () => {}
+      default: () => {
+      }
     },
     cropperStyle: {
       type: Object,
-      default: () => {}
+      default: () => {
+      }
     },
     fileSize: {
       type: Number,
@@ -113,8 +118,8 @@ export default {
         info: true, // 图片大小信息
         canScale: true, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 200, // 默认生成截图框宽度
-        autoCropHeight: 150, // 默认生成截图框高度
+        // autoCropWidth: 200, // 默认生成截图框宽度  父组件中去应用
+        // autoCropHeight: 150, // 默认生成截图框高度
         canMove: true, // 上传图片是否可以移动
         fixedBox: true, // 固定截图框大小 不允许改变
         fixed: false, // 是否开启截图框宽高固定比例
@@ -204,10 +209,10 @@ export default {
       this.$emit('close')
     },
     // 图片缩放
-    changeScale(num) {
-      num = num || 1
-      this.$refs.cropper.changeScale(num)
-    },
+    // changeScale(num) {
+    //   num = num || 1
+    //   this.$refs.cropper.changeScale(num)
+    // },
     // 向左旋转
     rotateLeft() {
       this.$refs.cropper.rotateLeft()
@@ -223,20 +228,25 @@ export default {
   .cropper-dialog /deep/ .el-dialog {
     width: max-content;
   }
+
   .cropper-dialog /deep/ .el-dialog__body {
     padding: 20px;
   }
+
   .cropper-dialog /deep/ .el-button {
     width: 145px;
   }
+
   .cropper-wrap {
     display: flex;
   }
+
   .cropper-wrap .cropper-box {
     margin-right: 20px;
     width: 375px;
     height: 176px;
   }
+
   .cropper-wrap .preview-box .preview-title {
     display: flex;
     min-width: 100px;
@@ -246,25 +256,31 @@ export default {
     color: #1e2330;
     font-family: PingFangSC-Medium;
   }
+
   .cropper-wrap .preview-box .preview-title .preveiw-upload {
     color: #0067ED;
     cursor: pointer;
   }
+
   .cropper-wrap .preview-box .preview-img {
     border-radius: 2px;
   }
+
   .fun-btn {
     margin-top: 16px;
   }
+
   .fun-btn i {
     margin-right: 16px;
     font-size: 18px;
     color: #8c8c8c;
     cursor: pointer;
   }
+
   .fun-btn i:hover {
     color: #0067ED;
   }
+
   .fun-btn .reUpload {
     margin-right: 16px;
   }

@@ -294,8 +294,8 @@ export default {
       fileSize: 2, // 限制文件上传大小
       cropperOption: {
         img: '',
-        autoCropWidth: 375,
-        autoCropHeight: 176
+        autoCropWidth: 170,
+        autoCropHeight: 120
       },
       cropperStyle: {
         width: '390px',
@@ -314,15 +314,15 @@ export default {
         ],
         isPublish: [
           { required: true, message: '发布字段不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '发布字段只能为自然数' }
+          { pattern: /^[0-9]\d*$/, message: '发布字段只能为数字' }
         ],
         isOriginal: [
           { required: true, message: '原创字段不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '原创字段只能为自然数' }
+          { pattern: /^[0-9]\d*$/, message: '原创字段只能为数字' }
         ],
         openComment: [
           { required: true, message: '网站评论不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数' }
+          { pattern: /^[0-9]\d*$/, message: '网站评论只能为数字' }
         ],
         content: [
           { required: true, message: '内容不能为空', trigger: 'blur' }
@@ -344,8 +344,10 @@ export default {
     handleAdd() {
       this.isEdit = false
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        localStorage.setItem('vditorvditor', '')
+      })
       this.blog = Object.assign({}, defaultBlog)
-      localStorage.setItem('vditorvditor', '')
     },
     handleUpdate(row) {
       this.isEdit = true
@@ -495,20 +497,23 @@ export default {
     position: relative;
     overflow: hidden;
   }
+
   .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
   }
+
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 375px;
-    height: 176px;
-    line-height: 178px;
+    width: 170px;
+    height: 120px;
+    line-height: 120px;
     text-align: center;
   }
+
   .avatar {
-    width: 375px;
-    height: 176px;
+    width: 170px;
+    height: 120px;
     display: block;
   }
 </style>

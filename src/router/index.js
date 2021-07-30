@@ -76,6 +76,18 @@ export const asyncRoutes = [
         meta: { title: '文章管理', icon: 'blog-article' }
       },
       {
+        path: 'nav',
+        name: '导航栏管理',
+        component: () => import('@/views/blog/nav/index'),
+        meta: { title: '导航栏管理', icon: 'blog-nav' }
+      },
+      {
+        path: 'loop',
+        name: '轮播图管理',
+        component: () => import('@/views/blog/loop/index'),
+        meta: { title: '轮播图管理', icon: 'blog-loop' }
+      },
+      {
         path: 'category',
         name: '分类管理',
         component: () => import('@/views/blog/category/index'),

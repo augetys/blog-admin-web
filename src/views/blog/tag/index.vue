@@ -56,7 +56,7 @@
         <el-form-item label="标签名称：" prop="name">
           <el-input v-model="tag.name" style="width: 250px" />
         </el-form-item>
-        <el-form-item label="标签图标：" prop="name">
+        <el-form-item label="标签图标：" prop="icon">
           <el-input v-model="tag.icon" style="width: 250px" />
         </el-form-item>
         <el-form-item label="排序：" prop="sort">
@@ -104,7 +104,7 @@ export default {
         ],
         sort: [
           { required: true, message: '请输入标签排序', trigger: 'blur' },
-          { type: 'number', required: true, message: '标签排序必须为数字', trigger: 'blur' }
+          { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' }
         ]
       }
     }

@@ -31,7 +31,7 @@ x<template>
         <el-table-column prop="username" label="用户名" align="center" />
         <el-table-column prop="icon" label="头像" align="center">
           <template slot-scope="scope">
-            <img :src="scope.row.icon" style="width: 50px;height: 50px" alt="图标">
+            <img :src="scope.row.icon" style="width: 50px;height: 50px" alt="头像">
           </template>
         </el-table-column>
         <el-table-column prop="nickName" label="昵称" align="center" />
