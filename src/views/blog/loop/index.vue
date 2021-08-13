@@ -20,6 +20,16 @@
           </template>
         </el-table-column>
         <el-table-column prop="title" label="轮播图标题" align="center" />
+        <el-table-column prop="isLink" label="是否外链" align="center">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.isLink"
+              :active-value="1"
+              :inactive-value="0"
+              disabled
+            />
+          </template>
+        </el-table-column>
         <el-table-column prop="targetUrl" label="跳转地址" align="center" />
         <el-table-column prop="imageUrl" label="图片" align="center">
           <template slot-scope="scope">
@@ -65,6 +75,13 @@
           <el-input v-model="loop.imageUrl" style="width: 250px" />
         </el-form-item>
 
+        <el-form-item label="是否外链：">
+          <el-radio-group v-model="loop.isLink">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
         <el-form-item label="跳转地址：" prop="targetUrl">
           <el-input v-model="loop.targetUrl" style="width: 250px" />
         </el-form-item>
@@ -92,6 +109,7 @@ const defaultLoop = {
   id: null,
   title: null,
   sort: null,
+  isLink: null,
   targetUrl: null,
   imageUrl: null
 }

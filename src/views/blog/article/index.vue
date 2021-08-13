@@ -7,7 +7,7 @@
         </el-form-item>
         <el-form-item label="分类名称">
           <el-select
-            v-model="listQuery.categoryKeyword"
+            v-model="listQuery.categoryId"
             style="width: 140px"
             filterable
             clearable
@@ -24,7 +24,7 @@
         </el-form-item>
         <el-form-item label="标签名称">
           <el-select
-            v-model="listQuery.tagKeyword"
+            v-model="listQuery.tagId"
             style="width: 140px"
             filterable
             clearable
@@ -40,13 +40,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="是否原创">
-          <el-select v-model="listQuery.status" clearable placeholder="是否原创">
+          <el-select v-model="listQuery.isOriginal" clearable placeholder="是否原创">
             <el-option label="转载" value="0" />
             <el-option label="原创" value="1" />
           </el-select>
         </el-form-item>
         <el-form-item label="是否发布">
-          <el-select v-model="listQuery.status" clearable placeholder="是否发布">
+          <el-select v-model="listQuery.isPublish" clearable placeholder="是否发布">
             <el-option label="下架" value="0" />
             <el-option label="发布" value="1" />
           </el-select>
@@ -75,7 +75,7 @@
         </el-table-column>
         <el-table-column label="分类" width="100" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.articleCategoryId }}</span>
+            <span>{{ scope.row.categoryId }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" align="center" />
@@ -143,9 +143,9 @@
         </el-row>
         <el-row>
           <el-col :span="6.5">
-            <el-form-item label="分类" :label-width="formLabelWidth" prop="articleCategoryId">
+            <el-form-item label="分类" :label-width="formLabelWidth" prop="categoryId">
               <el-select
-                v-model="blog.articleCategoryId"
+                v-model="blog.categoryId"
                 size="small"
                 placeholder="请选择"
                 style="width:150px"
@@ -248,10 +248,10 @@ import { uploadPhotosToQiniu } from '@/api/file'
 const listQuery = {
   pageNum: 1,
   pageSize: 10,
-  tagKeyword: '',
-  categoryKeyword: '',
-  publishKeyword: '',
-  originalKeyword: '',
+  tagId: '',
+  categoryId: '',
+  isPublish: '',
+  isOriginal: '',
   title: ''
 }
 const defaultBlog = {
@@ -266,7 +266,7 @@ const defaultBlog = {
   isOriginal: null,
   author: null,
   articlesPart: null,
-  articleCategoryId: null,
+  categoryId: null,
   sort: null,
   openComment: null
 }
