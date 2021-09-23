@@ -1,16 +1,12 @@
 <template>
-  <div />
+  <div>
+    <h1>七牛云存储</h1>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Index',
-  data() {
-
-  },
-  methods: {
-
-  }
+  name: 'Index'
 }
 </script>
 
