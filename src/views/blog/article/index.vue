@@ -75,7 +75,7 @@
         </el-table-column>
         <el-table-column label="分类" width="100" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.categoryId }}</span>
+            <span>{{ scope.row.categoryName }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" align="center" />
@@ -145,7 +145,7 @@
           <el-col :span="6.5">
             <el-form-item label="分类" :label-width="formLabelWidth" prop="categoryId">
               <el-select
-                v-model="blog.categoryId"
+                v-model="blog.categoryName"
                 size="small"
                 placeholder="请选择"
                 style="width:150px"
@@ -267,6 +267,7 @@ const defaultBlog = {
   author: null,
   articlesPart: null,
   categoryId: null,
+  categoryName: null,
   sort: null,
   openComment: null
 }

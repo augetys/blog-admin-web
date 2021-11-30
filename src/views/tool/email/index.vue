@@ -62,6 +62,7 @@
         # 发件人（必须正确，否则发送失败）
         # 用户名，默认为发件人邮箱前缀
         # 密码（注意，某些邮箱需要为SMTP服务单独设置密码，如QQ和163等等）
+        # 如果使用jdk8,ssl,可能出现发送失败，https://blog.csdn.net/fujunsfzh/article/details/118418313
         </pre>
       </el-tab-pane>
     </el-tabs>
