@@ -62,12 +62,13 @@ export default {
           // linkToImgUrl: 'https://sm.ms/api/upload',
           handler(file) {
             const formData = new FormData()
+            formData.append('bucket', 'hopelittle')
             for (const i in file) {
               formData.append('file', file[i])
             }
             const request = new XMLHttpRequest()
             // 图片上传路径
-            request.open('POST', process.env.VUE_APP_BASE_API + '/resource/qiniu/pictures')
+            request.open('POST', process.env.VUE_APP_BASE_API + '/resource/qiniu/files')
             request.setRequestHeader('Authorization', 'Bearer  ' + getToken())
             request.onload = that.onloadCallback
             request.send(formData)

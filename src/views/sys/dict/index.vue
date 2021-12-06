@@ -83,7 +83,8 @@ const defaultDict = {
   id: null,
   name: null,
   description: null,
-  sort: null
+  sort: null,
+  status: null
 }
 export default {
   name: 'Index',
@@ -201,6 +202,7 @@ export default {
       })
     },
     viewDetails(row) {
+      console.log(row)
       this.$router.push({ path: '/sys/dictDetail', query: { dictId: row.id, dictName: row.name }})
     }
   }

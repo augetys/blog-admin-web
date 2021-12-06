@@ -22,8 +22,7 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Admin',
-      logo: 'http://photo.choot.top/test'
+
     }
   }
 }

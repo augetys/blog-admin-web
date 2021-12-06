@@ -145,10 +145,11 @@
           <el-col :span="6.5">
             <el-form-item label="分类" :label-width="formLabelWidth" prop="categoryId">
               <el-select
-                v-model="blog.categoryName"
+                v-model="blog.categoryId"
                 size="small"
                 placeholder="请选择"
                 style="width:150px"
+                filterable
               >
                 <el-option
                   v-for="item in categoryOptions"
@@ -187,8 +188,7 @@
           <el-col :span="6.5">
             <el-form-item label="是否原创" :label-width="formLabelWidth" prop="isOriginal">
               <el-radio-group v-model="blog.isOriginal" size="small">
-                <el-radio :label="1" border>原创</el-radio>
-                <el-radio :label="0" border>转载</el-radio>
+                <el-radio v-for="item in blogOriginalDictList" :key="item.id" :label="item.value" border size="small">{{ item.label }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -196,8 +196,7 @@
           <el-col :span="6.5">
             <el-form-item label="文章评论" :label-width="formLabelWidth" prop="openComment">
               <el-radio-group v-model="blog.openComment" size="small">
-                <el-radio :label="1" border>开启</el-radio>
-                <el-radio :label="0" border>关闭</el-radio>
+                <el-radio v-for="item in blogCommentDisable" :key="item.id" :label="item.value" border size="small">{{ item.label }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -205,8 +204,7 @@
           <el-col :span="4.5">
             <el-form-item label="是否发布" :label-width="lineLabelWidth" prop="isPublish">
               <el-radio-group v-model="blog.isPublish" size="small">
-                <el-radio :label="1" border>发布</el-radio>
-                <el-radio :label="0" border>下架</el-radio>
+                <el-radio v-for="item in blogPublishDictList" :key="item.id" :label="item.value" border>{{ item.label }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -243,7 +241,8 @@ import {
 } from '@/api/article'
 import MarkDown from '@/components/Markdown'
 import CropperImage from '@/components/Upload/CropperImage'
-import { uploadPhotosToQiniu } from '@/api/file'
+import { uploadFileToQiniu } from '@/api/file'
+import { getDetailByNames } from '@/api/dict'
 
 const listQuery = {
   pageNum: 1,
@@ -290,6 +289,9 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: '120px',
       lineLabelWidth: '120px',
+      blogOriginalDictList: [],
+      blogPublishDictList: [],
+      blogCommentDisable: [],
       showCropper: false, // 显示裁剪弹窗
       canCropper: false,
       fileSize: 2, // 限制文件上传大小
@@ -335,11 +337,21 @@ export default {
     this.categoryRemoteMethod()
     this.tagRemoteMethod()
     this.getList()
+    this.getDictList()
   },
   methods: {
     onSubmit() {
       getArticleList(this.listQuery).then(response => {
         this.tableList = response.data.list
+      })
+    },
+    getDictList() {
+      const dictTypeList = ['blog_original_status', 'blog_publish_status', 'blog_comment_disable']
+      getDetailByNames(dictTypeList).then(response => {
+        const dictMap = response.data
+        this.blogOriginalDictList = dictMap.blog_original_status
+        this.blogPublishDictList = dictMap.blog_publish_status
+        this.blogCommentDisable = dictMap.blog_comment_disable
       })
     },
     handleAdd() {
@@ -395,9 +407,9 @@ export default {
     },
     submitForm() {
       this.blog.content = this.$refs.editor.getHtml()
-      this.blog.tagId = this.blog.tagId.join(',')
       this.$refs.form.validate((valid) => {
         if (valid) {
+          this.blog.tagId = this.blog.tagId.join(',')
           this.$confirm('是否要确认?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -475,7 +487,9 @@ export default {
     uploadImg(file, data) {
       const fileFormData = new FormData()
       fileFormData.append('file', file)
-      uploadPhotosToQiniu(fileFormData, this).then(res => {
+      fileFormData.append('bucket', 'hopelittle')
+      fileFormData.append('name', file.name)
+      uploadFileToQiniu(fileFormData, this).then(res => {
         console.log(res)
         this.blog.cover = res.data.url
         this.showCropper = false

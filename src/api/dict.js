@@ -16,6 +16,14 @@ export function updateDict(data) {
   })
 }
 
+export function getDetailByNames(data) {
+  return request({
+    url: '/sys/dict/getDetailByNames',
+    method: 'post',
+    data: data
+  })
+}
+
 export function createDict(data) {
   return request({
     url: '/sys/dict/save',
@@ -62,9 +70,17 @@ export function deleteDictDetail(id) {
   })
 }
 
-export function updateStatus(data) {
+export function updateDictStatus(data) {
   return request({
     url: '/sys/dict/updateStatus',
+    method: 'post',
+    data: data
+  })
+}
+
+export function updateDictDetailStatus(data) {
+  return request({
+    url: '/sys/dictDetail/updateStatus',
     method: 'post',
     data: data
   })

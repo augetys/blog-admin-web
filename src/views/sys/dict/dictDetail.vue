@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { updateStatus, deleteDictDetail, getDetailById, updateDictDetail, createDictDetail } from '@/api/dict'
+import { updateDictDetailStatus, deleteDictDetail, getDetailById, updateDictDetail, createDictDetail } from '@/api/dict'
 
 const listQuery = {
   label: null,
@@ -149,6 +149,7 @@ export default {
     },
     getList() {
       this.listLoading = true
+      this.listQuery.dictId = this.dictId
       getDetailById(this.listQuery).then(response => {
         this.listLoading = false
         this.tableList = response.data
@@ -187,7 +188,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        updateStatus({ id: row.id, status: row.status }).then(response => {
+        updateDictDetailStatus({ id: row.id, status: row.status }).then(response => {
           this.$message({
             type: 'success',
             message: response.message

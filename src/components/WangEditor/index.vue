@@ -6,7 +6,7 @@
 <script>
 // 引入 wangEditor
 import wangEditor from 'wangeditor'
-import { uploadPhotosToQiniu } from '@/api/file'
+import { uploadFilesToQiniu } from '@/api/file'
 
 export default {
   data() {
@@ -34,10 +34,11 @@ export default {
         // files 是 input 中选中的文件列表
         // insert 是获取图片 url 后，插入到编辑器的方法
         const formData = new FormData()
+        formData.append('bucket', 'hopelittle')
         for (let i = 0; i < files.length; i++) {
           formData.append('file', files[i], files[i].name)
         }
-        uploadPhotosToQiniu(formData, this).then(res => {
+        uploadFilesToQiniu(formData, this).then(res => {
           for (let i = 0; i < res.data.length; i++) {
             insert(res.data[i].url)
           }

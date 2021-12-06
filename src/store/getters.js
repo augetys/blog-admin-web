@@ -8,6 +8,11 @@ const getters = {
   routers: state => state.menus.routers,
   roles: state => state.user.roles,
   visitedViews: state => state.tagsView.visitedViews,
-  cachedViews: state => state.tagsView.cachedViews
+  cachedViews: state => state.tagsView.cachedViews,
+  baseApi: state => state.api.baseApi,
+  fileUploadApi: state => state.api.fileUploadApi,
+  filesUploadApi: state => state.api.filesUploadApi,
+  filesUploadToQiniuApi: state => state.api.filesUploadToQiniuApi,
+  fileUploadToQiniuApi: state => state.api.fileUploadToQiniuApi
 }
 export default getters

@@ -41,7 +41,7 @@
           </el-form-item>
 
           <el-form-item label="收件人" prop="tos">
-            <el-input v-model="send.tos" style="width: 646px" />
+            <el-input v-model="sends" style="width: 646px" />
           </el-form-item>
 
           <el-form-item label="邮件内容" prop="content">
@@ -80,6 +80,7 @@ export default {
   },
   data() {
     return {
+      sends:'',
       mail: {
         fromUser: '',
         host: '',
@@ -89,7 +90,7 @@ export default {
         port: ''
       },
       send: {
-        tos: '',
+        tos: [],
         subject: '',
         content: ''
       }
@@ -125,7 +126,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.send.tos = this.send.tos.split(',')
+        this.send.tos = this.sends.split(',')
         sendMailContent(this.send).then(response => {
           this.$message({
             message: response.message,

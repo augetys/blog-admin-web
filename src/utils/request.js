@@ -5,9 +5,9 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: process.env.VUE_APP_BASE_API === '/' ? '' : process.env.VUE_APP_BASE_API,
   // 请求超时时间
-  timeout: 60000
+  timeout: 20000
 })
 
 // request interceptor

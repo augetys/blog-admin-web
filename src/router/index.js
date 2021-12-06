@@ -122,13 +122,7 @@ export const asyncRoutes = [
         name: '邮件',
         component: () => import('@/views/tool/email/index'),
         meta: { title: '邮件', icon: 'tool-mail' }
-      },
-      {
-        path: 'code',
-        name: '代码生成',
-        component: () => import('@/views/tool/code/index'),
-        meta: { title: '代码生成', icon: 'tool-code' }
-      },
+      }
     ]
   },
   {
