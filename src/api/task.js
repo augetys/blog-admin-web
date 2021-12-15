@@ -24,11 +24,10 @@ export function updateTask(data) {
   })
 }
 
-export function deleteTask(data) {
+export function deleteTask(id) {
   return request({
-    url: '/sys/task/delete',
-    method: 'post',
-    data: data
+    url: '/sys/task/delete/' + id,
+    method: 'get'
   })
 }
 
@@ -45,5 +44,12 @@ export function updateStatus(data) {
     url: '/sys/task/updateStatus',
     method: 'post',
     data: data
+  })
+}
+
+export function execTask(id) {
+  return request({
+    url: '/sys/task/exec/' + id,
+    method: 'get'
   })
 }

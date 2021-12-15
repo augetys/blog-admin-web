@@ -45,8 +45,9 @@
         </el-table-column>
         <el-table-column prop="description" label="描述" align="center" />
         <el-table-column prop="createTime" label="创建日期" align="center" />
-        <el-table-column label="操作" align="center" width="200">
+        <el-table-column label="操作" align="center" width="300">
           <template slot-scope="scope">
+            <el-button type="success" size="small" @click="exec(scope.row)">执行一次</el-button>
             <el-button type="primary" size="small" @click="handleUpdate(scope.row)">编辑</el-button>
             <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
           </template>
@@ -156,7 +157,7 @@
           <el-table-column prop="beanName" label="Bean名称" align="center" />
           <el-table-column prop="methodName" label="执行方法" align="center" />
           <el-table-column prop="params" label="参数" align="center" />
-          <el-table-column prop="cronExpression" label="cron表达式" align="center" />
+          <el-table-column prop="cronExpression" width="100px" label="cron表达式" align="center" />
           <el-table-column prop="exceptionDetail" label="异常详情" align="center">
             <template slot-scope="scope">
               <el-button
@@ -173,8 +174,8 @@
               <el-tag :type="scope.row.isSuccess ? 'success' : 'danger'">{{ scope.row.isSuccess ? '成功' : '失败' }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="time" width="100px" label="耗时(毫秒)" />
-          <el-table-column prop="createTime" label="创建日期" align="center" />
+          <el-table-column align="center" prop="time" label="耗时(毫秒)" />
+          <el-table-column prop="createTime" label="执行日期" width="160px" align="center" />
         </el-table>
         <el-pagination
           layout="total, sizes,prev, pager, next,jumper"
@@ -196,7 +197,7 @@
 </template>
 
 <script>
-import { createTask, deleteTask, getTaskList, getTaskLogList, updateStatus, updateTask } from '@/api/task'
+import { execTask, createTask, deleteTask, getTaskList, getTaskLogList, updateStatus, updateTask } from '@/api/task'
 
 const listQuery = {
   pageNum: 1,
@@ -261,6 +262,9 @@ export default {
         ],
         personInCharge: [
           { required: true, message: '请输入负责人名称', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '请输入报警邮箱', trigger: 'blur' }
         ]
       }
     }
@@ -301,6 +305,21 @@ export default {
         this.totalLog = response.data.total
       })
     },
+    exec(row) {
+      execTask(row.id).then(response => {
+        if (response.code === 200) {
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: response.message
+          })
+        }
+      })
+    },
     handleStatusChange(row) {
       this.$confirm('是否要修改启用状态?', '提示', {
         confirmButtonText: '确定',
@@ -308,10 +327,17 @@ export default {
         type: 'warning'
       }).then(() => {
         updateStatus({ id: row.id, isPause: row.isPause }).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
         })
       }).catch(() => {
         this.$message({
@@ -350,19 +376,33 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateTask(this.task).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
             } else {
               createTask(this.task).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
@@ -385,10 +425,17 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteTask(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
           this.getList()
         })
       })

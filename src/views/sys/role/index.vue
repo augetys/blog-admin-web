@@ -153,19 +153,33 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateRole(this.role).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
             } else {
               createRole(this.role).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
@@ -188,10 +202,17 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteRole(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
           this.getList()
         })
       })

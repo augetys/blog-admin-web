@@ -98,12 +98,6 @@ export const asyncRoutes = [
         name: '标签管理',
         component: () => import('@/views/blog/tag/index'),
         meta: { title: '标签管理', icon: 'blog-tag' }
-      },
-      {
-        path: 'comment',
-        name: '评论管理',
-        component: () => import('@/views/blog/comment/index'),
-        meta: { title: '评论管理', icon: 'blog-comment' }
       }
     ]
   },

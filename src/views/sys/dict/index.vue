@@ -158,19 +158,33 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateDict(this.dict).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
             } else {
               createDict(this.dict).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
@@ -193,10 +207,17 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteDict(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
           this.getList()
         })
       })

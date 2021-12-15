@@ -23,6 +23,14 @@ export function updateFile(data) {
   })
 }
 
+export function updateQiniuFile(data) {
+  return request({
+    url: '/resource/qiniu/update',
+    method: 'post',
+    data: data
+  })
+}
+
 export function getQiniuFileList(data) {
   return request({
     url: '/resource/qiniu/list',
@@ -47,7 +55,6 @@ export function uploadFilesToQiniu(data) {
   })
 }
 
-
 export function deleteQiniuFile(id) {
   return request({
     url: '/resource/qiniu/delete/' + id,
@@ -55,9 +62,16 @@ export function deleteQiniuFile(id) {
   })
 }
 
-export function getQiniuConfig() {
+export function findBucket() {
   return request({
-    url: '/resource/qiniu/findConfig',
+    url: '/resource/qiniu/findBucket',
+    method: 'post'
+  })
+}
+
+export function synchronize() {
+  return request({
+    url: '/resource/qiniu/synchronize',
     method: 'post'
   })
 }

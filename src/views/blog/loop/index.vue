@@ -75,7 +75,7 @@
           <el-input v-model="loop.imageUrl" style="width: 250px" />
         </el-form-item>
 
-        <el-form-item label="是否外链：">
+        <el-form-item prop="isLink" label="是否外链：">
           <el-radio-group v-model="loop.isLink">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
@@ -126,8 +126,8 @@ export default {
       isEdit: false,
       dialogVisible: false,
       rules: {
-        title: [
-          { required: true, message: '请输入标题', trigger: 'blur' },
+        isLink: [
+          { required: true, message: '请选择是否外链', trigger: 'blur' },
           { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
         ],
         targetUrl: [
@@ -189,19 +189,33 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateLoop(this.loop).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
             } else {
               createLoop(this.loop).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
@@ -229,10 +243,17 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteLoop(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
           this.getList()
         })
       })

@@ -103,6 +103,10 @@ export default {
           { required: true, message: '请输入分类名称', trigger: 'blur' },
           { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
         ],
+        content: [
+          { required: true, message: '请输入分类介绍', trigger: 'blur' },
+          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+        ],
         sort: [
           { required: true, message: '请输入分类排序', trigger: 'blur' },
           { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' }
@@ -154,19 +158,33 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateCategory(this.category).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
             } else {
               createCategory(this.category).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
@@ -194,10 +212,17 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteCategory(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
           this.getList()
         })
       })

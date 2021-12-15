@@ -8,6 +8,7 @@
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
           <el-button type="primary" icon="el-icon-upload" @click="handleAdd()">上传文件</el-button>
+          <el-button type="primary" icon="el-icon-refresh" @click="synchronize()">同步文件</el-button>
           <el-button type="primary" plain @click="handleResetSearch()">重置</el-button>
         </el-form-item>
       </el-form>
@@ -78,14 +79,14 @@
           <el-input v-model="qiniu.name" style="width: 250px" />
         </el-form-item>
 
-        <el-form-item label="上传bucket：" prop="bucket">
+        <el-form-item v-if="!isEdit" label="上传bucket：" prop="bucket">
           <template>
             <el-select v-model="bucket" clearable placeholder="请选择" style="width: 250px">
               <el-option
-                v-for="item in qiniuConfig"
-                :key="item.id"
-                :label="item.bucket"
-                :value="item.bucket"
+                v-for="item in findBucket"
+                :key="item"
+                :label="item"
+                :value="item"
               />
             </el-select>
           </template>
@@ -119,7 +120,7 @@
 </template>
 
 <script>
-import { getQiniuFileList, deleteQiniuFile, updateFile, getQiniuConfig } from '@/api/file'
+import { synchronize, getQiniuFileList, deleteQiniuFile, updateQiniuFile, findBucket } from '@/api/file'
 import { Message } from 'element-ui'
 import { getToken } from '@/utils/auth'
 import { mapGetters } from 'vuex'
@@ -150,7 +151,7 @@ export default {
       dialogVisible: false,
       isEdit: false,
       bucket: null,
-      qiniuConfig: [],
+      findBucket: [],
       qiniu: Object.assign({}, defaultqiniu),
       total: null,
       listLoading: false,
@@ -198,8 +199,8 @@ export default {
       })
     },
     getConfig() {
-      getQiniuConfig().then(response => {
-        this.qiniuConfig = response.data
+      findBucket().then(response => {
+        this.findBucket = response.data
       })
     },
     handleUpdate(row) {
@@ -230,11 +231,18 @@ export default {
             type: 'warning'
           }).then(() => {
             if (this.isEdit) {
-              updateFile(this.qiniu).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+              updateQiniuFile(this.qiniu).then(response => {
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
@@ -260,10 +268,17 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteQiniuFile(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
           this.getList()
         })
       })
@@ -272,17 +287,40 @@ export default {
       // 上传后清空文件列表
       this.$refs['uploadFile'].clearFiles()
       this.dialogVisible = false
+      if (response.code === 200) {
+        this.$message({
+          type: 'success',
+          message: response.message
+        })
+      } else {
+        this.$message({
+          type: 'error',
+          message: response.message
+        })
+      }
       this.getList()
-      this.$message({
-        type: 'success',
-        message: response.message
-      })
     },
     handleError(e, file, fileList) {
       Message({
         message: e.message,
         type: 'error',
         duration: 5 * 1000
+      })
+    },
+    synchronize() {
+      synchronize().then(response => {
+        if (response.code === 200) {
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: response.message
+          })
+        }
+        this.getList()
       })
     }
   }

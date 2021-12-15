@@ -118,7 +118,7 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="封面" :label-width="formLabelWidth">
+            <el-form-item label="封面" prop="cover" :label-width="formLabelWidth">
               <el-upload
                 class="avatar-uploader"
                 action="#"
@@ -329,6 +329,9 @@ export default {
         ],
         content: [
           { required: true, message: '内容不能为空', trigger: 'blur' }
+        ],
+        cover: [
+          { required: true, message: '请上传封面', trigger: 'blur' }
         ]
       }
     }
@@ -417,19 +420,33 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateArticle(this.blog).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogFormVisible = false
                 this.getList()
               })
             } else {
               createArticle(this.blog).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogFormVisible = false
                 this.getList()
               })
@@ -452,10 +469,17 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteArticle(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
           this.getList()
         })
       })

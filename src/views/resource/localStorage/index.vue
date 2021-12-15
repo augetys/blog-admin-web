@@ -130,7 +130,7 @@ export default {
       isEdit: false,
       localStorage: Object.assign({}, defaultLocalStorage),
       total: null,
-      listLoading: false,
+      listLoading: false
     }
   },
   computed: {
@@ -195,10 +195,17 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateFile(this.localStorage).then(response => {
-                this.$message({
-                  message: response.message,
-                  type: 'success'
-                })
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: response.message
+                  })
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: response.message
+                  })
+                }
                 this.dialogVisible = false
                 this.getList()
               })
@@ -223,10 +230,17 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteFile(row.id).then(response => {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
           this.getList()
         })
       })
@@ -236,10 +250,17 @@ export default {
       this.$refs['uploadFile'].clearFiles()
       this.dialogVisible = false
       this.getList()
-      this.$message({
-        type: 'success',
-        message: response.message
-      })
+      if (response.code === 200) {
+        this.$message({
+          type: 'success',
+          message: response.message
+        })
+      } else {
+        this.$message({
+          type: 'error',
+          message: response.message
+        })
+      }
     },
     handleError(e, file, fileList) {
       this.$message({
