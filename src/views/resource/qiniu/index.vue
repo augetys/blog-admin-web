@@ -41,11 +41,11 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="文件备注名" align="center" />
+        <el-table-column prop="name" label="文件备注名" align="center" show-overflow-tooltip />
         <el-table-column prop="bucket" label="Bucket" align="center" />
-        <el-table-column prop="suffix" label="文件类型" align="center" />
+        <el-table-column prop="type" label="文件类型" align="center" />
         <el-table-column prop="size" label="文件大小" align="center" />
-        <el-table-column prop="updateTime" label="创建时间" align="center" />
+        <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center" width="300px">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click="handleUpdate(scope.row)">编辑</el-button>

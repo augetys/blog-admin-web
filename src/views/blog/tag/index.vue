@@ -100,11 +100,12 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入标签名称', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+          { min: 2, max: 140, message: '长度在 1 到 8 个字符', trigger: 'blur' }
         ],
         sort: [
           { required: true, message: '请输入标签排序', trigger: 'blur' },
-          { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' }
+          { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' },
+          { pattern: /^(?:[1-9]\d{0,3}|0)$/, message: '范围在0-9999', trigger: 'blur' }
         ]
       }
     }

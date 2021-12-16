@@ -30,7 +30,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="targetUrl" label="跳转地址" align="center" />
+        <el-table-column prop="targetUrl" label="跳转地址" align="center" show-overflow-tooltip />
         <el-table-column prop="imageUrl" label="图片" align="center">
           <template slot-scope="scope">
             <img :src="scope.row.imageUrl" style="width: 50px;height: 50px" alt="图片">
@@ -127,8 +127,7 @@ export default {
       dialogVisible: false,
       rules: {
         isLink: [
-          { required: true, message: '请选择是否外链', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+          { required: true, message: '请选择是否外链', trigger: 'blur' }
         ],
         targetUrl: [
           { required: true, message: '请输入跳转地址', trigger: 'blur' },
@@ -140,7 +139,8 @@ export default {
         ],
         sort: [
           { required: true, message: '请输入排序', trigger: 'blur' },
-          { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' }
+          { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' },
+          { pattern: /^(?:[1-9]\d{0,3}|0)$/, message: '范围在0-9999', trigger: 'blur' }
         ]
       }
     }

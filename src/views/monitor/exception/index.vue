@@ -41,7 +41,6 @@
             <el-button type="primary" plain size="small" @click="handleDetail(scope.row)">查看详情</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="exceptionMessage" label="异常简单信息" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
       </el-table>
     </div>

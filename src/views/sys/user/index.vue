@@ -149,6 +149,19 @@ const defaultAdmin = {
 export default {
   name: 'Index',
   data() {
+    const checkEmail = (rule, value, callback) => {
+      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+      if (!value) {
+        return callback(new Error('邮箱不能为空'))
+      }
+      setTimeout(() => {
+        if (mailReg.test(value)) {
+          callback()
+        } else {
+          callback(new Error('请输入正确的邮箱格式'))
+        }
+      }, 100)
+    }
     return {
       listQuery: Object.assign({}, listQuery),
       tableList: null,
@@ -164,11 +177,14 @@ export default {
       rules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+          { min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, validator: checkEmail, trigger: 'blur' }
         ],
         nickName: [
           { required: true, message: '请输入昵称', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+          { min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -323,10 +339,17 @@ export default {
         params.append('userId', this.userId)
         params.append('roleIds', this.allocRoleIds)
         updateRoleByUser(params).then(response => {
-          this.$message({
-            message: response.message,
-            type: 'success'
-          })
+          if (response.code === 200) {
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
           this.allocDialogVisible = false
         })
       })

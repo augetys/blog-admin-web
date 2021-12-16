@@ -135,19 +135,17 @@ export default {
       dialogVisible: false,
       total: null,
       selectMenuList: [],
-      level: null,
       rules: {
         name: [
           { required: true, message: '请输入菜单名称', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+          { min: 2, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
         ],
-        level: { required: true, message: '请输入菜单级别', trigger: 'blur' },
-        parentId: { required: true, message: '请输入父级菜单', trigger: 'blur' },
         path: { required: true, message: '请输入菜单路径', trigger: 'blur' },
         icon: { required: true, message: '请输入菜单图标', trigger: 'blur' },
         sort: [
           { required: true, message: '请输入菜单排序', trigger: 'blur' },
-          { type: 'number', required: true, message: '排序只能为数字', trigger: 'blur' }
+          { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' },
+          { pattern: /^(?:[1-9]\d{0,3}|0)$/, message: '范围在0-9999', trigger: 'blur' }
         ]
       },
       defaultProps: {

@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column prop="name" label="导航栏名" align="center" />
         <el-table-column prop="icon" label="导航栏图标" align="center" />
-        <el-table-column prop="path" label="跳转路由" align="center" />
+        <el-table-column prop="path" label="跳转路由" align="center" show-overflow-tooltip />
         <el-table-column prop="sort" label="排序" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
@@ -106,7 +106,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+          { min: 2, max: 140, message: '长度在 1 到 8 个字符', trigger: 'blur' }
         ],
         path: [
           { required: true, message: '请输入跳转路由', trigger: 'blur' }
@@ -117,7 +117,8 @@ export default {
         ],
         sort: [
           { required: true, message: '请输入排序', trigger: 'blur' },
-          { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' }
+          { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' },
+          { pattern: /^(?:[1-9]\d{0,3}|0)$/, message: '范围在0-9999', trigger: 'blur' }
         ]
       }
     }

@@ -28,9 +28,10 @@
         style="width: 100%"
       >
         <el-table-column prop="id" label="任务ID" align="center" />
-        <el-table-column prop="jobName" label="任务名称" align="center" />
+        <el-table-column prop="jobName" label="任务名称" align="center" show-overflow-tooltip />
         <el-table-column prop="beanName" label="Bean名称" align="center" />
         <el-table-column prop="methodName" label="执行方法" align="center" />
+        <el-table-column prop="subTask" label="子任务ID" align="center" />
         <el-table-column prop="params" label="参数" align="center" />
         <el-table-column prop="cronExpression" label="cron表达式" align="center" />
         <el-table-column prop="isPause" label="启用状态" align="center">
@@ -43,7 +44,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="description" label="描述" align="center" />
+        <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip />
         <el-table-column prop="createTime" label="创建日期" align="center" />
         <el-table-column label="操作" align="center" width="300">
           <template slot-scope="scope">
