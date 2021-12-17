@@ -232,17 +232,10 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateQiniuFile(this.qiniu).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogVisible = false
                 this.getList()
               })
@@ -268,17 +261,10 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteQiniuFile(row.id).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
           this.getList()
         })
       })
@@ -287,17 +273,10 @@ export default {
       // 上传后清空文件列表
       this.$refs['uploadFile'].clearFiles()
       this.dialogVisible = false
-      if (response.code === 200) {
-        this.$message({
-          type: 'success',
-          message: response.message
-        })
-      } else {
-        this.$message({
-          type: 'error',
-          message: response.message
-        })
-      }
+      this.$message({
+        type: 'success',
+        message: response.message
+      })
       this.getList()
     },
     handleError(e, file, fileList) {
@@ -309,17 +288,10 @@ export default {
     },
     synchronize() {
       synchronize().then(response => {
-        if (response.code === 200) {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
-        } else {
-          this.$message({
-            type: 'error',
-            message: response.message
-          })
-        }
+        this.$message({
+          type: 'success',
+          message: response.message
+        })
         this.getList()
       })
     }

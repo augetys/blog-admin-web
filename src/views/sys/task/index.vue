@@ -154,7 +154,7 @@
           border
           style="width: 100%"
         >
-          <el-table-column prop="jobName" label="任务名称" align="center" />
+          <el-table-column prop="jobName" label="任务名称" align="center" show-overflow-tooltip />
           <el-table-column prop="beanName" label="Bean名称" align="center" />
           <el-table-column prop="methodName" label="执行方法" align="center" />
           <el-table-column prop="params" label="参数" align="center" />
@@ -308,17 +308,10 @@ export default {
     },
     exec(row) {
       execTask(row.id).then(response => {
-        if (response.code === 200) {
-          this.$message({
-            type: 'success',
-            message: response.message
-          })
-        } else {
-          this.$message({
-            type: 'error',
-            message: response.message
-          })
-        }
+        this.$message({
+          type: 'success',
+          message: response.message
+        })
       })
     },
     handleStatusChange(row) {
@@ -328,17 +321,10 @@ export default {
         type: 'warning'
       }).then(() => {
         updateStatus({ id: row.id, isPause: row.isPause }).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
         })
       }).catch(() => {
         this.$message({
@@ -377,33 +363,19 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateTask(this.task).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogVisible = false
                 this.getList()
               })
             } else {
               createTask(this.task).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogVisible = false
                 this.getList()
               })
@@ -426,17 +398,10 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteTask(row.id).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
           this.getList()
         })
       })

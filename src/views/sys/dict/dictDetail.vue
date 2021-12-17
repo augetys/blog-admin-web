@@ -175,17 +175,10 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteDictDetail(row.id).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
           this.getList()
         })
       })
@@ -197,17 +190,10 @@ export default {
         type: 'warning'
       }).then(() => {
         updateDictDetailStatus({ id: row.id, status: row.status }).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
         })
       }).catch(() => {
         this.$message({
@@ -227,33 +213,19 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateDictDetail(this.dictDetail).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogVisible = false
                 this.getList()
               })
             } else {
               createDictDetail(this.dictDetail).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogVisible = false
                 this.getList()
               })

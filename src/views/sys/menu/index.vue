@@ -175,17 +175,10 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteMenu(row.id).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
           this.getList()
         })
       })
@@ -217,33 +210,19 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateMenu(this.menu).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogVisible = false
                 this.getList()
               })
             } else {
               createMenu(this.menu).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogVisible = false
                 this.getList()
               })

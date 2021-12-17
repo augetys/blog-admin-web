@@ -184,11 +184,19 @@
 
         </el-row>
 
+        <!-- https://blog.csdn.net/Superman_peng/article/details/109163942-->
         <el-row>
           <el-col :span="6.5">
             <el-form-item label="是否原创" :label-width="formLabelWidth" prop="isOriginal">
               <el-radio-group v-model="blog.isOriginal" size="small">
-                <el-radio v-for="item in blogOriginalDictList" :key="item.id" :label="item.value" border size="small">{{ item.label }}</el-radio>
+                <el-radio
+                  v-for="item in blogOriginalDictList"
+                  :key="item.id"
+                  :label="parseInt(item.value)"
+                  border
+                  size="small"
+                >{{ item.label }}
+                </el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -196,7 +204,14 @@
           <el-col :span="6.5">
             <el-form-item label="文章评论" :label-width="formLabelWidth" prop="openComment">
               <el-radio-group v-model="blog.openComment" size="small">
-                <el-radio v-for="item in blogCommentDisable" :key="item.id" :label="item.value" border size="small">{{ item.label }}</el-radio>
+                <el-radio
+                  v-for="item in blogCommentDisable"
+                  :key="item.id"
+                  :label="parseInt(item.value)"
+                  border
+                  size="small"
+                >{{ item.label }}
+                </el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -204,7 +219,9 @@
           <el-col :span="4.5">
             <el-form-item label="是否发布" :label-width="lineLabelWidth" prop="isPublish">
               <el-radio-group v-model="blog.isPublish" size="small">
-                <el-radio v-for="item in blogPublishDictList" :key="item.id" :label="item.value" border>{{ item.label }}</el-radio>
+                <el-radio v-for="item in blogPublishDictList" :key="item.id" :label="parseInt(item.value)" border>{{
+                  item.label }}
+                </el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -360,9 +377,6 @@ export default {
     handleAdd() {
       this.isEdit = false
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        localStorage.setItem('vditorvditor', '')
-      })
       this.blog = Object.assign({}, defaultBlog)
     },
     handleUpdate(row) {
@@ -420,33 +434,21 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateArticle(this.blog).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogFormVisible = false
                 this.getList()
+              }).catch(res => {
+                this.blog.tagId = this.blog.tagId.split(',')
               })
             } else {
               createArticle(this.blog).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogFormVisible = false
                 this.getList()
               })
@@ -469,17 +471,10 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteArticle(row.id).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
           this.getList()
         })
       })
@@ -514,7 +509,6 @@ export default {
       fileFormData.append('bucket', 'hopelittle')
       fileFormData.append('name', file.name)
       uploadFileToQiniu(fileFormData, this).then(res => {
-        console.log(res)
         this.blog.cover = res.data.url
         this.showCropper = false
         this.$message({

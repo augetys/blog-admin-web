@@ -266,17 +266,10 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               update(this.admin).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogVisible = false
                 this.getList()
               })
@@ -339,17 +332,10 @@ export default {
         params.append('userId', this.userId)
         params.append('roleIds', this.allocRoleIds)
         updateRoleByUser(params).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
           this.allocDialogVisible = false
         })
       })
@@ -361,17 +347,10 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteUser(row.id).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
           this.getList()
         })
       })

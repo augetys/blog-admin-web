@@ -5,6 +5,7 @@
 </template>
 
 <script>
+// https://b3log.org/vditor/
 import Vditor from 'vditor'
 import 'vditor/src/assets/scss/index.scss'
 import { getToken } from '@/utils/auth'
@@ -52,6 +53,7 @@ export default {
             'style': 'algol'
           }
         },
+        toolbar: ['emoji', 'headings', 'bold', 'italic', 'strike', '|', 'line', 'quote', 'list', 'ordered-list', 'check', 'outdent', 'indent', 'code', 'inline-code', 'insert-after', 'insert-before', 'undo', 'redo', 'upload', 'link', 'table', 'edit-mode', 'both', 'preview', 'fullscreen', 'outline', 'code-theme', 'content-theme', 'export', 'devtools', 'info', 'help'],
         theme: 'classic',
         outline: {
           enable: false,

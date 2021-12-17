@@ -70,21 +70,14 @@ export default {
         this.send.tos = this.sends.split(',')
         this.send.content = this.$refs.editor.getHtml()
         sendMailContent(this.send).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-            // 调用子组件方法
-            this.$refs.editor.setHtml('')
-            this.send = { subject: '' }
-            this.sends = ''
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
+          // 调用子组件方法
+          this.$refs.editor.setHtml('')
+          this.send = { subject: '' }
+          this.sends = ''
         })
       })
     }

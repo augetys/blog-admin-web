@@ -195,17 +195,10 @@ export default {
           }).then(() => {
             if (this.isEdit) {
               updateFile(this.localStorage).then(response => {
-                if (response.code === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: response.message
-                  })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
                 this.dialogVisible = false
                 this.getList()
               })
@@ -230,17 +223,10 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteFile(row.id).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
           this.getList()
         })
       })
@@ -250,17 +236,10 @@ export default {
       this.$refs['uploadFile'].clearFiles()
       this.dialogVisible = false
       this.getList()
-      if (response.code === 200) {
-        this.$message({
-          type: 'success',
-          message: response.message
-        })
-      } else {
-        this.$message({
-          type: 'error',
-          message: response.message
-        })
-      }
+      this.$message({
+        type: 'success',
+        message: response.message
+      })
     },
     handleError(e, file, fileList) {
       this.$message({
