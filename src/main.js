@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-
+import echarts from 'echarts'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
@@ -27,7 +27,9 @@ import 'highlight.js/styles/atom-one-dark.css'
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-
+import VueClipboard from 'vue-clipboard2'
+Vue.prototype.$echarts = echarts
+Vue.use(VueClipboard)
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明

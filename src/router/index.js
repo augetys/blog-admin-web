@@ -98,6 +98,24 @@ export const asyncRoutes = [
         name: '标签管理',
         component: () => import('@/views/blog/tag/index'),
         meta: { title: '标签管理', icon: 'blog-tag' }
+      },
+      {
+        path: 'soul',
+        name: '词句管理',
+        component: () => import('@/views/blog/soul/index'),
+        meta: { title: '词句管理', icon: 'blog-soul' }
+      },
+      {
+        path: 'photo',
+        name: '相册管理',
+        component: () => import('@/views/blog/photo/index'),
+        meta: { title: '相册管理', icon: 'blog-photo' }
+      },
+      {
+        path: 'website',
+        name: '网址导航',
+        component: () => import('@/views/blog/website/index'),
+        meta: { title: '网址导航', icon: 'blog-website' }
       }
     ]
   },

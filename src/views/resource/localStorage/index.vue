@@ -22,18 +22,15 @@
         <el-table-column prop="realName" label="文件名" align="center">
           <template slot-scope="scope">
             <el-popover
-              :content="scope.row.path"
               placement="top-start"
-              title="路径"
               width="200"
               trigger="hover"
             >
+              <el-image :src="baseApi + '/opt/file' + scope.row.path" />
               <a
                 slot="reference"
-                :href="baseApi + '/opt/file' + scope.row.path"
                 class="el-link--primary"
                 style="word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
-                target="_blank"
               >
                 {{ scope.row.realName }}
               </a>
@@ -46,7 +43,7 @@
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center" width="300px">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="handleUpdate(scope.row)">编辑</el-button>
+            <el-button v-clipboard:copy="baseApi + '/opt/file' + scope.row.path" v-clipboard:success="onCopy" v-clipboard:error="onError" type="success" size="small" icon="el-icon-document-copy">复制地址</el-button>
             <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -62,7 +59,7 @@
       @current-change="handleCurrentChange"
     />
     <el-dialog
-      :title="isEdit?'编辑文件':'上传文件'"
+      title="上传文件"
       :visible.sync="dialogVisible"
       width="45%"
     >
@@ -100,7 +97,7 @@
 </template>
 
 <script>
-import { getFileList, deleteFile, updateFile } from '@/api/file'
+import { getFileList, deleteFile } from '@/api/file'
 import { getToken } from '@/utils/auth'
 import { mapGetters } from 'vuex'
 
@@ -127,7 +124,6 @@ export default {
       listQuery: Object.assign({}, listQuery),
       tableList: null,
       dialogVisible: false,
-      isEdit: false,
       localStorage: Object.assign({}, defaultLocalStorage),
       total: null,
       listLoading: false
@@ -166,11 +162,6 @@ export default {
         this.total = response.data.total
       })
     },
-    handleUpdate(row) {
-      this.dialogVisible = true
-      this.isEdit = true
-      this.localStorage = Object.assign({}, row)
-    },
     handleSizeChange(val) {
       this.listQuery.pageNum = 1
       this.listQuery.pageSize = val
@@ -193,18 +184,7 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            if (this.isEdit) {
-              updateFile(this.localStorage).then(response => {
-                this.$message({
-                  type: 'success',
-                  message: response.message
-                })
-                this.dialogVisible = false
-                this.getList()
-              })
-            } else {
-              this.$refs.uploadFile.submit()
-            }
+            this.$refs.uploadFile.submit()
           })
         } else {
           this.$message({
@@ -240,6 +220,14 @@ export default {
         type: 'success',
         message: response.message
       })
+    },
+    // 复制成功时的回调函数
+    onCopy(e) {
+      this.$message.success('内容已复制到剪切板！')
+    },
+    // 复制失败时的回调函数
+    onError(e) {
+      this.$message.error('抱歉，复制失败！')
     },
     handleError(e, file, fileList) {
       this.$message({

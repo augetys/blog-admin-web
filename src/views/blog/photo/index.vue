@@ -2,29 +2,12 @@
   <div>
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="文件名">
-          <el-input v-model="listQuery.fileKey" placeholder="文件名" />
-        </el-form-item>
-        <el-form-item label="bucket名称">
-          <el-select
-            v-model="listQuery.bucket"
-            filterable
-            clearable
-            reserve-keyword
-            placeholder="请输入bucket名称"
-          >
-            <el-option
-              v-for="item in findBucket"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
+        <el-form-item label="照片描述">
+          <el-input v-model="listQuery.content" placeholder="照片描述" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
-          <el-button type="primary" icon="el-icon-upload" @click="handleAdd()">上传文件</el-button>
-          <el-button type="primary" icon="el-icon-refresh" @click="synchronize()">同步文件</el-button>
+          <el-button type="primary" icon="el-icon-edit" @click="handleAdd()">添加</el-button>
           <el-button type="primary" plain @click="handleResetSearch()">重置</el-button>
         </el-form-item>
       </el-form>
@@ -36,7 +19,7 @@
             {{ scope.$index+1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="文件名" align="center">
+        <el-table-column prop="url" label="图片链接" align="center">
           <template slot-scope="scope">
             <el-popover
               placement="top-start"
@@ -49,20 +32,26 @@
                 class="el-link--primary"
                 style="word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
               >
-                {{ scope.row.fileKey }}
+                {{ scope.row.url }}
               </a>
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="文件备注名" align="center" show-overflow-tooltip />
-        <el-table-column prop="bucket" label="Bucket" align="center" />
-        <el-table-column prop="type" label="文件类型" align="center" />
-        <el-table-column prop="size" label="文件大小" align="center" />
+        <el-table-column prop="tip" label="图片描述" align="center" show-overflow-tooltip />
         <el-table-column prop="createTime" label="创建时间" align="center" />
-        <el-table-column label="操作" align="center" width="300px">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button v-clipboard:copy="scope.row.url" v-clipboard:success="onCopy" v-clipboard:error="onError" type="success" size="small" icon="el-icon-document-copy">复制地址</el-button>
-            <el-button type="primary" size="small" @click="handleUpdate(scope.row)">编辑</el-button>
+            <el-button
+              v-clipboard:copy="scope.row.url"
+              v-clipboard:success="onCopy"
+              v-clipboard:error="onError"
+              type="success"
+              size="small"
+              icon="el-icon-document-copy"
+            >复制地址
+            </el-button>
+            <el-button type="primary" size="small" @click="handleUpdate(scope.row)">编辑
+            </el-button>
             <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -78,33 +67,17 @@
       @current-change="handleCurrentChange"
     />
     <el-dialog
-      :title="isEdit?'编辑文件':'上传文件'"
+      :title="isEdit?'编辑相册':'添加相册'"
       :visible.sync="dialogVisible"
       width="45%"
     >
       <el-form
-        ref="qiniuForm"
-        :model="qiniu"
+        ref="photoForm"
+        :model="photo"
         label-width="150px"
         size="small"
         :rules="rules"
       >
-        <el-form-item label="文件备注名：" prop="name">
-          <el-input v-model="qiniu.name" style="width: 250px" />
-        </el-form-item>
-
-        <el-form-item v-if="!isEdit" label="上传bucket：" prop="bucket">
-          <template>
-            <el-select v-model="bucket" placeholder="请选择" style="width: 250px">
-              <el-option
-                v-for="item in findBucket"
-                :key="item"
-                :label="item"
-                :value="item"
-              />
-            </el-select>
-          </template>
-        </el-form-item>
 
         <el-form-item v-if="!isEdit" label="文件：" prop="file">
           <el-upload
@@ -125,36 +98,36 @@
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           </el-upload>
         </el-form-item>
+
+        <el-form-item label="相册描述：" prop="tip">
+          <el-input v-model="photo.tip" style="width: 350px" />
+        </el-form-item>
+
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="small" @click="handleDialogConfirm('qiniuForm')">确 定</el-button>
+        <el-button type="primary" size="small" @click="handleDialogConfirm('photoForm')">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { synchronize, getQiniuFileList, deleteQiniuFile, updateQiniuFile, findBucket } from '@/api/file'
+
+import { createPhoto, deletePhoto, getPhotoList, updatePhoto } from '@/api/photo'
 import { Message } from 'element-ui'
-import { getToken } from '@/utils/auth'
 import { mapGetters } from 'vuex'
+import { getToken } from '@/utils/auth'
 
 const listQuery = {
   pageNum: 1,
   pageSize: 10,
-  fileKey: null,
-  bucket: null
+  tip: null
 }
-const defaultqiniu = {
+const defaultPhoto = {
   id: null,
-  name: null,
-  fileKey: null,
-  bucket: null,
-  suffix: null,
   url: null,
-  type: null,
-  size: null
+  tip: null
 }
 
 export default {
@@ -164,15 +137,17 @@ export default {
       headers: { 'Authorization': 'Bearer  ' + getToken() },
       listQuery: Object.assign({}, listQuery),
       tableList: null,
-      dialogVisible: false,
-      isEdit: false,
-      bucket: 'hopelittle',
-      findBucket: [],
-      qiniu: Object.assign({}, defaultqiniu),
       total: null,
       listLoading: false,
-      uploadData: null,
+      photo: Object.assign({}, defaultPhoto),
+      isEdit: false,
+      dialogVisible: false,
+      uploadData: { name: null, bucket: 'hopelittle' },
       rules: {
+        tip: [
+          { required: true, message: '请输入照片描述', trigger: 'blur' },
+          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
+        ],
         file: [
           { required: true, message: '请上传图片', trigger: 'change' }
         ]
@@ -187,7 +162,6 @@ export default {
   },
   created() {
     this.getList()
-    this.getConfig()
   },
   methods: {
     beforeUpload(file) {
@@ -196,36 +170,31 @@ export default {
         this.loading = false
         this.$message.error('上传文件大小不能超过 100MB!')
       }
-      this.$refs['qiniuForm'].clearValidate('file')
+      this.$refs['photoForm'].clearValidate('file')
     },
     handleChange(file, fileList) {
-      this.$refs['qiniuForm'].clearValidate('file')
+      this.$refs['photoForm'].clearValidate('file')
     },
     onSubmit() {
-      getQiniuFileList(this.listQuery).then(response => {
+      getPhotoList(this.listQuery).then(response => {
         this.tableList = response.data.list
       })
     },
     handleResetSearch() {
       this.listQuery = Object.assign({}, listQuery)
     },
+    handleAdd() {
+      this.isEdit = false
+      this.dialogVisible = true
+      this.photo = Object.assign({}, defaultPhoto)
+    },
     getList() {
       this.listLoading = true
-      getQiniuFileList(this.listQuery).then(response => {
+      getPhotoList(this.listQuery).then(response => {
         this.listLoading = false
         this.tableList = response.data.list
         this.total = response.data.total
       })
-    },
-    getConfig() {
-      findBucket().then(response => {
-        this.findBucket = response.data
-      })
-    },
-    handleUpdate(row) {
-      this.dialogVisible = true
-      this.isEdit = true
-      this.qiniu = Object.assign({}, row)
     },
     handleSizeChange(val) {
       this.listQuery.pageNum = 1
@@ -236,44 +205,59 @@ export default {
       this.listQuery.pageNum = val
       this.getList()
     },
-    handleAdd() {
-      this.dialogVisible = true
-      this.isEdit = false
-      this.qiniu = Object.assign({}, defaultqiniu)
+    // 复制成功时的回调函数
+    onCopy(e) {
+      this.$message.success('内容已复制到剪切板！')
     },
-    handleDialogConfirm(qiniuForm) {
-      this.$confirm('是否要确认?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        if (this.isEdit) {
-          updateQiniuFile(this.qiniu).then(response => {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-            this.dialogVisible = false
-            this.getList()
+    // 复制失败时的回调函数
+    onError(e) {
+      this.$message.error('抱歉，复制失败！')
+    },
+    handleDialogConfirm(photoForm) {
+      this.$refs[photoForm].validateField('tip', (valid) => {
+        if (!valid) {
+          this.$confirm('是否要确认?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            if (this.isEdit) {
+              updatePhoto(this.photo).then(response => {
+                this.$message({
+                  type: 'success',
+                  message: response.message
+                })
+                this.dialogVisible = false
+                this.getList()
+              })
+            } else {
+              // 提交表单前校验是否上传文件
+              this.$refs[photoForm].validateField('file')
+              this.$refs.uploadFile.submit()
+            }
           })
         } else {
-          this.uploadData = { name: this.qiniu.name, bucket: this.bucket }
-          // 提交表单前校验是否上传文件
-          this.$refs[qiniuForm].validateField('file')
-          const that = this
-          this.$nextTick(() => {
-            that.$refs.uploadFile.submit()
+          this.$message({
+            message: '请填写正确的信息！',
+            type: 'error',
+            duration: 1000
           })
+          return false
         }
       })
     },
+    handleUpdate(row) {
+      this.isEdit = true
+      this.dialogVisible = true
+      this.photo = Object.assign({}, row)
+    },
     handleDelete(row) {
-      this.$confirm('是否要删除该文件?', '提示', {
+      this.$confirm('是否要删除该相册?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteQiniuFile(row.id).then(response => {
+        deletePhoto(row.id).then(response => {
           this.$message({
             type: 'success',
             message: response.message
@@ -283,20 +267,18 @@ export default {
       })
     },
     handleSuccess(response, file, fileList) {
-      this.dialogVisible = false
-      if (response.code === 200) {
-        // 上传后清空文件列表
-        this.$refs['uploadFile'].clearFiles()
+      this.photo.url = response.data.url
+      createPhoto(this.photo).then(response => {
         this.$message({
           type: 'success',
           message: response.message
         })
-      } else {
-        this.$message({
-          type: 'error',
-          message: response.message
-        })
-      }
+        this.dialogVisible = false
+        this.getList()
+      })
+      // 上传后清空文件列表
+      this.$refs['uploadFile'].clearFiles()
+      this.dialogVisible = false
       this.getList()
     },
     handleError(e, file, fileList) {
@@ -305,28 +287,11 @@ export default {
         type: 'error',
         duration: 5 * 1000
       })
-    },
-    // 复制成功时的回调函数
-    onCopy(e) {
-      this.$message.success('内容已复制到剪切板！')
-    },
-    // 复制失败时的回调函数
-    onError(e) {
-      this.$message.error('抱歉，复制失败！')
-    },
-    synchronize() {
-      synchronize().then(response => {
-        this.$message({
-          type: 'success',
-          message: response.message
-        })
-        this.getList()
-      })
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

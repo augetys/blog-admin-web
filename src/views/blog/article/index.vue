@@ -65,7 +65,7 @@
             {{ scope.$index+1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="标题" align="center" />
+        <el-table-column prop="title" label="标题" align="center" show-overflow-tooltip />
         <el-table-column prop="author" label="作者" align="center" />
         <el-table-column prop="isOriginal" label="是否原创" align="center">
           <template slot-scope="scope">
@@ -227,12 +227,12 @@
           </el-col>
         </el-row>
 
-        <el-form-item v-if="blog.isOriginal===0" label="作者" :label-width="formLabelWidth" prop="author">
-          <el-input v-model="blog.author" auto-complete="off" />
+        <el-form-item v-if="blog.isOriginal===0" label="作者" :label-width="formLabelWidth" prop="articleAuthor">
+          <el-input v-model="blog.articleAuthor" auto-complete="off" />
         </el-form-item>
 
         <el-form-item v-if="blog.isOriginal===0" label="文章出处" :label-width="formLabelWidth">
-          <el-input v-model="blog.articlesPart" auto-complete="off" />
+          <el-input v-model="blog.articlePart" auto-complete="off" />
         </el-form-item>
 
         <el-form-item label="内容" :label-width="formLabelWidth" prop="content">
@@ -281,7 +281,8 @@ const defaultBlog = {
   clickCount: null,
   isOriginal: null,
   author: null,
-  articlesPart: null,
+  articlePart: null,
+  articleAuthor: null,
   categoryId: null,
   categoryName: null,
   sort: null,
@@ -378,6 +379,11 @@ export default {
       this.isEdit = false
       this.dialogFormVisible = true
       this.blog = Object.assign({}, defaultBlog)
+      const that = this
+      this.$nextTick(() => {
+        // DOM现在更新了
+        that.$refs.editor.initData()
+      })
     },
     handleUpdate(row) {
       this.isEdit = true

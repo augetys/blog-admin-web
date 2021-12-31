@@ -34,7 +34,7 @@
         <el-table-column prop="userName" label="操作人" align="center" />
         <el-table-column prop="url" label="请求接口" align="center" show-overflow-tooltip />
         <el-table-column prop="type" label="请求方式" align="center" />
-        <el-table-column prop="operation" label="操作名称" align="center" />
+        <el-table-column prop="operation" label="操作名称" align="center" show-overflow-tooltip />
         <el-table-column prop="ip" label="IP" align="center" />
         <el-table-column prop="ipAddress" label="IP来源" align="center" />
         <el-table-column prop="spendTime" label="请求耗时" align="center">
