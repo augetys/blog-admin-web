@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="任务名称">
-          <el-input v-model="listQuery.jobName" placeholder="任务名称" />
+          <el-input v-model.trim="listQuery.jobName" placeholder="任务名称" />
         </el-form-item>
         <el-form-item label="任务状态">
           <el-select v-model="listQuery.isPause" placeholder="任务状态">
@@ -143,6 +143,7 @@
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" @click="onSubmitLog()">搜索</el-button>
             <el-button type="primary" plain @click="handleResetSearchLog()">重置</el-button>
+            <el-button type="primary" icon="el-icon-refresh" plain @click="refreshLog()">刷新</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -298,6 +299,9 @@ export default {
         this.total = response.data.total
       })
     },
+    refreshLog() {
+      this.getListLog()
+    },
     getListLog() {
       this.listLoading = true
       getTaskLogList(this.listQueryLog).then(response => {
@@ -325,6 +329,9 @@ export default {
             type: 'success',
             message: response.message
           })
+        }).catch(res => {
+          // fix el-switch 点击始终会改变状态
+          this.getList()
         })
       }).catch(() => {
         this.$message({
@@ -346,11 +353,17 @@ export default {
     handleUpdate(row) {
       this.isEdit = true
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['taskForm'].clearValidate()
+      })
       this.task = Object.assign({}, row)
     },
     handleAdd() {
       this.isEdit = false
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['taskForm'].clearValidate()
+      })
       this.task = Object.assign({}, defaultTask)
     },
     handleDialogConfirm(taskForm) {

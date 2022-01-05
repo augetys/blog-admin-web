@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="菜单名称">
-          <el-input v-model="listQuery.name" placeholder="菜单名称" />
+          <el-input v-model.trim="listQuery.name" placeholder="菜单名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -26,6 +26,17 @@
         <el-table-column prop="icon" label="图标" align="center">
           <template slot-scope="scope">
             <svg-icon :icon-class="scope.row.icon" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="isShow" label="启用状态" align="center">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.isShow"
+              :active-value="1"
+              :inactive-value="0"
+              :disabled="scope.row.id === '1'"
+              @change="handleStatusChange(scope.row)"
+            />
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" align="center" />
@@ -104,7 +115,7 @@
 </template>
 
 <script>
-import { createMenu, updateMenu, deleteMenu, getMenuTree } from '@/api/menu'
+import { createMenu, updateMenu, deleteMenu, getMenuTree, updateStatus } from '@/api/menu'
 
 const listQuery = {
   pageNum: 1,
@@ -119,7 +130,8 @@ const defaultMenu = {
   path: null,
   icon: null,
   level: null,
-  sort: null
+  sort: null,
+  isShow: null
 }
 
 export default {
@@ -167,6 +179,9 @@ export default {
       this.menu = Object.assign({}, row)
       this.isEdit = true
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['menuForm'].clearValidate()
+      })
     },
     handleDelete(row) {
       this.$confirm('是否要删除该菜单?', '提示', {
@@ -181,6 +196,29 @@ export default {
           })
           this.getList()
         })
+      })
+    },
+    handleStatusChange(row) {
+      this.$confirm('是否要修改该状态?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        updateStatus({ id: row.id, isShow: row.isShow }).then(response => {
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
+        }).catch(res => {
+          // fix el-switch 点击始终会改变状态
+          this.getList()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消修改'
+        })
+        this.getList()
       })
     },
     handleSizeChange(val) {
@@ -198,6 +236,9 @@ export default {
     handleAdd() {
       this.isEdit = false
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['menuForm'].clearValidate()
+      })
       this.menu = Object.assign({}, defaultMenu)
     },
     handleDialogConfirm(menuForm) {

@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="标签名称">
-          <el-input v-model="listQuery.label" placeholder="标签名称" />
+          <el-input v-model.trim="listQuery.label" placeholder="标签名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -158,12 +158,18 @@ export default {
     },
     handleAdd() {
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['dictDetailForm'].clearValidate()
+      })
       this.isEdit = false
       this.dictDetail = Object.assign({}, defaultDictDetail)
       this.dictDetail.dictId = this.dictId
     },
     handleUpdate(row) {
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['dictDetailForm'].clearValidate()
+      })
       this.isEdit = true
       this.dictDetail = Object.assign({}, row)
       this.dictDetail.dictId = this.dictId
@@ -194,6 +200,9 @@ export default {
             type: 'success',
             message: response.message
           })
+        }).catch(res => {
+          // fix el-switch 点击始终会改变状态
+          this.getList()
         })
       }).catch(() => {
         this.$message({

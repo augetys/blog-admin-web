@@ -27,3 +27,10 @@ export function deleteMenu(id) {
     method: 'get'
   })
 }
+export function updateStatus(data) {
+  return request({
+    url: '/sys/menus/updateStatus',
+    method: 'post',
+    data: data
+  })
+}

@@ -3,10 +3,10 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="用户名">
-          <el-input v-model="listQuery.username" placeholder="用户名" />
+          <el-input v-model.trim="listQuery.userName" placeholder="用户名" />
         </el-form-item>
         <el-form-item label="操作内容">
-          <el-input v-model="listQuery.operation" placeholder="操作内容" />
+          <el-input v-model.trim="listQuery.operation" placeholder="操作内容" />
         </el-form-item>
         <el-form-item label="操作时间">
           <el-date-picker

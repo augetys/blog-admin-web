@@ -65,7 +65,7 @@
         <el-col :span="12">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span>天气预报</span>
+              <span>{{ weather.city }}：天气预报</span>
             </div>
             <div v-if="weather" class="weather">
               <el-row :gutter="20">
@@ -94,6 +94,7 @@
               <div v-for="(item,index) in book" :key="index">
                 <el-image :src="item.img"></el-image>
                 <p>书名：{{ item.title }}</p>
+                <p>书籍分类：{{ item.catalog }}</p>
                 <p>标签：{{ item.tags}}</p>
                 <p>简介：{{ item.sub1}}</p>
               </div>

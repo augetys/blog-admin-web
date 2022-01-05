@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="用户名">
-          <el-input v-model="listQuery.realName" placeholder="文件名" />
+          <el-input v-model.trim="listQuery.realName" placeholder="文件名" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -26,7 +26,7 @@
               width="200"
               trigger="hover"
             >
-              <el-image :src="baseApi + '/opt/file' + scope.row.path" />
+              <el-image :src="scope.row.url" />
               <a
                 slot="reference"
                 class="el-link--primary"
@@ -43,7 +43,7 @@
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center" width="300px">
           <template slot-scope="scope">
-            <el-button v-clipboard:copy="baseApi + '/opt/file' + scope.row.path" v-clipboard:success="onCopy" v-clipboard:error="onError" type="success" size="small" icon="el-icon-document-copy">复制地址</el-button>
+            <el-button v-clipboard:copy="scope.row.url" v-clipboard:success="onCopy" v-clipboard:error="onError" type="success" size="small" icon="el-icon-document-copy">复制地址</el-button>
             <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -131,7 +131,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'baseApi',
       'filesUploadApi'
     ])
   },
@@ -173,6 +172,9 @@ export default {
     },
     handleAdd() {
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['localStorageForm'].clearValidate()
+      })
       this.isEdit = false
       this.localStorage = Object.assign({}, defaultLocalStorage)
     },
@@ -212,14 +214,24 @@ export default {
       })
     },
     handleSuccess(response, file, fileList) {
-      // 上传后清空文件列表
-      this.$refs['uploadFile'].clearFiles()
-      this.dialogVisible = false
-      this.getList()
-      this.$message({
-        type: 'success',
-        message: response.message
-      })
+      if (response.code === 200) {
+        // 上传后清空文件列表
+        this.$refs['uploadFile'].clearFiles()
+        this.dialogVisible = false
+        this.getList()
+        this.$message({
+          type: 'success',
+          message: response.message
+        })
+      } else {
+        this.$refs['uploadFile'].clearFiles()
+        this.dialogVisible = false
+        this.getList()
+        this.$message({
+          type: 'error',
+          message: response.message
+        })
+      }
     },
     // 复制成功时的回调函数
     onCopy(e) {

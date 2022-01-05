@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="照片描述">
-          <el-input v-model="listQuery.content" placeholder="照片描述" />
+          <el-input v-model.trim="listQuery.content" placeholder="照片描述" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -186,6 +186,9 @@ export default {
     handleAdd() {
       this.isEdit = false
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['photoForm'].clearValidate()
+      })
       this.photo = Object.assign({}, defaultPhoto)
     },
     getList() {
@@ -249,6 +252,9 @@ export default {
     handleUpdate(row) {
       this.isEdit = true
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['photoForm'].clearValidate()
+      })
       this.photo = Object.assign({}, row)
     },
     handleDelete(row) {

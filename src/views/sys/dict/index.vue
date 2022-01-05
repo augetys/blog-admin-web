@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="字典名称">
-          <el-input v-model="listQuery.name" placeholder="字典名称" />
+          <el-input v-model.trim="listQuery.name" placeholder="字典名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -131,6 +131,9 @@ export default {
     },
     handleUpdate(row) {
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['dictForm'].clearValidate()
+      })
       this.isEdit = true
       this.dict = Object.assign({}, row)
     },
@@ -145,6 +148,9 @@ export default {
     },
     handleAdd() {
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['dictForm'].clearValidate()
+      })
       this.isEdit = false
       this.dict = Object.assign({}, defaultDict)
     },

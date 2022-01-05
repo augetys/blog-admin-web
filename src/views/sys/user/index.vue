@@ -3,7 +3,7 @@ x<template>
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="用户名">
-          <el-input v-model="listQuery.username" placeholder="用户名" />
+          <el-input v-model.trim="listQuery.username" placeholder="用户名" />
         </el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="listQuery.nickName" placeholder="昵称" />
@@ -206,17 +206,13 @@ export default {
         type: 'warning'
       }).then(() => {
         updateStatus({ id: row.id, status: row.status }).then(response => {
-          if (response.code === 200) {
-            this.$message({
-              type: 'success',
-              message: response.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
-          }
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
+        }).catch(res => {
+          // fix el-switch 点击始终会改变状态
+          this.getList()
         })
       }).catch(() => {
         this.$message({
@@ -239,6 +235,9 @@ export default {
     },
     handleUpdate(row) {
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['adminForm'].clearValidate()
+      })
       this.isEdit = true
       this.admin = Object.assign({}, row)
     },
@@ -253,6 +252,9 @@ export default {
     },
     handleAdd() {
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['adminForm'].clearValidate()
+      })
       this.isEdit = false
       this.admin = Object.assign({}, defaultAdmin)
     },
@@ -275,17 +277,12 @@ export default {
               })
             } else {
               create(this.admin).then(response => {
-                if (response.code === 200) {
+
                   this.$message({
                     type: 'success',
                     message: response.message
                   })
-                } else {
-                  this.$message({
-                    type: 'error',
-                    message: response.message
-                  })
-                }
+
                 this.dialogVisible = false
                 this.getList()
               })

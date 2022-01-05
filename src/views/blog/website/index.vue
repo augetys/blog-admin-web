@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="网址名称">
-          <el-input v-model="listQuery.name" placeholder="网址名称" />
+          <el-input v-model.trim="listQuery.name" placeholder="网址名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -131,6 +131,9 @@ export default {
     handleAdd() {
       this.isEdit = false
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['websiteForm'].clearValidate()
+      })
       this.website = Object.assign({}, defaultWebsite)
     },
     getList() {
@@ -191,6 +194,9 @@ export default {
     handleUpdate(row) {
       this.isEdit = true
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['websiteForm'].clearValidate()
+      })
       this.website = Object.assign({}, row)
     },
     handleDelete(row) {

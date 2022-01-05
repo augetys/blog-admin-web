@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="分类名">
-          <el-input v-model="listQuery.name" placeholder="分类名" />
+          <el-input v-model.trim="listQuery.name" placeholder="分类名" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -130,6 +130,9 @@ export default {
     handleAdd() {
       this.isEdit = false
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['categoryForm'].clearValidate()
+      })
       this.category = Object.assign({}, defaultCategory)
     },
     getList() {
@@ -190,6 +193,9 @@ export default {
     handleUpdate(row) {
       this.isEdit = true
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['categoryForm'].clearValidate()
+      })
       this.category = Object.assign({}, row)
     },
     handleDelete(row) {

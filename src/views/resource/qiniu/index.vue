@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="文件名">
-          <el-input v-model="listQuery.fileKey" placeholder="文件名" />
+          <el-input v-model.trim="listQuery.fileKey" placeholder="文件名" />
         </el-form-item>
         <el-form-item label="bucket名称">
           <el-select
@@ -224,6 +224,9 @@ export default {
     },
     handleUpdate(row) {
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['qiniuForm'].clearValidate()
+      })
       this.isEdit = true
       this.qiniu = Object.assign({}, row)
     },
@@ -238,6 +241,9 @@ export default {
     },
     handleAdd() {
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['qiniuForm'].clearValidate()
+      })
       this.isEdit = false
       this.qiniu = Object.assign({}, defaultqiniu)
     },
@@ -283,21 +289,24 @@ export default {
       })
     },
     handleSuccess(response, file, fileList) {
-      this.dialogVisible = false
       if (response.code === 200) {
         // 上传后清空文件列表
         this.$refs['uploadFile'].clearFiles()
+        this.dialogVisible = false
+        this.getList()
         this.$message({
           type: 'success',
           message: response.message
         })
       } else {
+        this.$refs['uploadFile'].clearFiles()
+        this.dialogVisible = false
+        this.getList()
         this.$message({
           type: 'error',
           message: response.message
         })
       }
-      this.getList()
     },
     handleError(e, file, fileList) {
       Message({

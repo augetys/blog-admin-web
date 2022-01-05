@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="博客标题">
-          <el-input v-model="listQuery.title" placeholder="博客标题" />
+          <el-input v-model.trim="listQuery.title" placeholder="博客标题" />
         </el-form-item>
         <el-form-item label="分类名称">
           <el-select
@@ -103,7 +103,7 @@
       :visible.sync="dialogFormVisible"
       fullscreen
     >
-      <el-form ref="form" :model="blog" :rules="rules">
+      <el-form ref="articleForm" :model="blog" :rules="rules">
 
         <el-row>
           <el-col :span="16">
@@ -241,7 +241,7 @@
 
         <el-form-item style="float: right; margin-right: 20px;">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button type="primary" @click="submitForm('articleForm')">确 定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -347,9 +347,6 @@ export default {
         ],
         content: [
           { required: true, message: '内容不能为空', trigger: 'blur' }
-        ],
-        cover: [
-          { required: true, message: '请上传封面', trigger: 'blur' }
         ]
       }
     }
@@ -378,6 +375,9 @@ export default {
     handleAdd() {
       this.isEdit = false
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['articleForm'].clearValidate()
+      })
       this.blog = Object.assign({}, defaultBlog)
       const that = this
       this.$nextTick(() => {
@@ -388,6 +388,9 @@ export default {
     handleUpdate(row) {
       this.isEdit = true
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['articleForm'].clearValidate()
+      })
       this.blog = Object.assign({}, row)
       this.blog.tagId = row.tagId.split(',')
       const that = this
@@ -428,9 +431,9 @@ export default {
         this.tagOptions = response.data
       })
     },
-    submitForm() {
+    submitForm(articleForm) {
       this.blog.content = this.$refs.editor.getHtml()
-      this.$refs.form.validate((valid) => {
+      this.$refs['articleForm'].validate((valid) => {
         if (valid) {
           this.blog.tagId = this.blog.tagId.join(',')
           this.$confirm('是否要确认?', '提示', {
