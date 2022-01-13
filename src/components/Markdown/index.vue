@@ -65,12 +65,13 @@ export default {
           handler(file) {
             const formData = new FormData()
             formData.append('bucket', 'hopelittle')
+            formData.append('name', 'markdown')
             for (const i in file) {
               formData.append('file', file[i])
             }
             const request = new XMLHttpRequest()
             // 图片上传路径
-            request.open('POST', process.env.VUE_APP_BASE_API + '/resource/qiniu/files')
+            request.open('POST', process.env.VUE_APP_BASE_API + '/resource/qiniu/file')
             request.setRequestHeader('Authorization', 'Bearer  ' + getToken())
             request.onload = that.onloadCallback
             request.send(formData)
@@ -82,7 +83,6 @@ export default {
     },
     onloadCallback(oEvent) {
       const currentTarget = oEvent.currentTarget
-      console.log('返回的结果', currentTarget)
       if (currentTarget.status !== 200) {
         return this.$message({
           type: 'error',
@@ -90,10 +90,9 @@ export default {
         })
       }
       const resp = JSON.parse(currentTarget.response)
-      console.log(resp)
       let imgMdStr = ''
       // 插入markdown语法  ![avatar](http://baidu.com/pic/doge.png)
-      imgMdStr = `![${resp.fileName}](${resp.data})`
+      imgMdStr = `![${resp.fileName}](${resp.data.url})`
       this.vditor.insertValue(imgMdStr)
     },
     // 获取html

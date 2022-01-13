@@ -378,12 +378,12 @@ export default {
       this.$nextTick(() => {
         this.$refs['articleForm'].clearValidate()
       })
-      this.blog = Object.assign({}, defaultBlog)
       const that = this
       this.$nextTick(() => {
         // DOM现在更新了
         that.$refs.editor.initData()
       })
+      this.blog = Object.assign({}, defaultBlog)
     },
     handleUpdate(row) {
       this.isEdit = true
@@ -460,6 +460,8 @@ export default {
                 })
                 this.dialogFormVisible = false
                 this.getList()
+              }).catch(res => {
+                this.blog.tagId = this.blog.tagId.split(',')
               })
             }
           })
@@ -500,12 +502,12 @@ export default {
     beforeAvatarUpload(file) {
       // 上传前校验
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png'
-      const isLt2M = file.size / 1024 / 1024 < 2
+      const isLt2M = file.size / 1024 / 1024 < 100
       if (!isJPG) {
         this.$message.error('上传图片只能是 JPG/PNG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 2 MB!')
+        this.$message.error('上传图片大小不能超过 100 MB!')
       }
       // 校验通过后显示裁剪框
       this.canCropper = isJPG && isLt2M

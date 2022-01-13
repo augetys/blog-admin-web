@@ -64,7 +64,7 @@
 
         <el-col :span="12">
           <el-card class="box-card">
-            <div slot="header" class="clearfix">
+            <div v-if="weather" slot="header" class="clearfix">
               <span>{{ weather.city }}：天气预报</span>
             </div>
             <div v-if="weather" class="weather">
@@ -182,7 +182,6 @@ export default {
   methods: {
     getBook() {
       getBook().then(response => {
-        console.log(response)
         this.book = response.data.result.data
       })
     },
