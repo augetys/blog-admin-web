@@ -60,18 +60,17 @@ export default {
           position: 'left'
         },
         upload: {
-          max: 5 * 1024 * 1024,
           // linkToImgUrl: 'https://sm.ms/api/upload',
           handler(file) {
             const formData = new FormData()
             formData.append('bucket', 'hopelittle')
-            formData.append('name', 'markdown')
+            // formData.append('name', 'markdown')
             for (const i in file) {
               formData.append('file', file[i])
             }
             const request = new XMLHttpRequest()
             // 图片上传路径
-            request.open('POST', process.env.VUE_APP_BASE_API + '/resource/qiniu/file')
+            request.open('POST', process.env.VUE_APP_BASE_API + '/resource/qiniu/files')
             request.setRequestHeader('Authorization', 'Bearer  ' + getToken())
             request.onload = that.onloadCallback
             request.send(formData)
@@ -90,10 +89,13 @@ export default {
         })
       }
       const resp = JSON.parse(currentTarget.response)
-      let imgMdStr = ''
-      // 插入markdown语法  ![avatar](http://baidu.com/pic/doge.png)
-      imgMdStr = `![${resp.fileName}](${resp.data.url})`
-      this.vditor.insertValue(imgMdStr)
+      const imgList = resp.data
+      for (let i = 0; i < imgList.length; i++) {
+        let imgMdStr = ''
+        // 插入markdown语法  ![avatar](http://baidu.com/pic/doge.png)
+        imgMdStr = `![${imgList[i].name}](${imgList[i].url})`
+        this.vditor.insertValue(imgMdStr)
+      }
     },
     // 获取html
     getHtml: function() {

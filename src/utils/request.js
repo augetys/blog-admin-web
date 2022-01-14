@@ -7,7 +7,7 @@ import { getToken } from '@/utils/auth'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API === '/' ? '' : process.env.VUE_APP_BASE_API,
   // 请求超时时间
-  timeout: 20000
+  timeout: 300000
 })
 
 // request interceptor
