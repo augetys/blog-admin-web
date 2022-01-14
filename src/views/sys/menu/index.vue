@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { createMenu, updateMenu, deleteMenu, getMenuTree, updateStatus } from '@/api/menu'
+import { createMenu, updateMenu, deleteMenu, getMenuTree, updateStatus, getMenuList } from '@/api/menu'
 
 const listQuery = {
   pageNum: 1,
@@ -171,9 +171,23 @@ export default {
   },
   methods: {
     onSubmit() {
-      getMenuTree(this.listQuery).then(response => {
-        this.getList()
-      })
+      // 重置分页参数
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = 10
+      if (this.listQuery.name === '' || this.listQuery.name === null) {
+        getMenuTree(this.listQuery).then(response => {
+          this.listLoading = false
+          this.tableList = response.data
+          this.total = response.data.length
+          this.selectMenuList = response.data
+        })
+      } else {
+        getMenuList(this.listQuery).then(response => {
+          this.listLoading = false
+          this.tableList = response.data.list
+          this.total = response.data.total
+        })
+      }
     },
     handleUpdate(row) {
       this.menu = Object.assign({}, row)
@@ -284,6 +298,7 @@ export default {
       getMenuTree(this.listQuery).then(response => {
         this.listLoading = false
         this.tableList = response.data
+        this.total = response.data.length
         this.selectMenuList = response.data
       })
     },

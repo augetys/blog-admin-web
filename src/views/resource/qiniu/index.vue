@@ -202,7 +202,11 @@ export default {
       this.$refs['qiniuForm'].clearValidate('file')
     },
     onSubmit() {
+      // 重置分页参数
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = 10
       getQiniuFileList(this.listQuery).then(response => {
+        this.total = response.data.total
         this.tableList = response.data.list
       })
     },

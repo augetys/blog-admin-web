@@ -7,6 +7,14 @@ export function getMenuTree() {
   })
 }
 
+export function getMenuList(data) {
+  return request({
+    url: '/sys/menus/list',
+    method: 'post',
+    data: data
+  })
+}
+
 export function updateMenu(data) {
   return request({
     url: '/sys/menus/update',

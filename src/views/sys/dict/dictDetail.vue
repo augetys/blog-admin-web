@@ -140,9 +140,13 @@ export default {
   },
   methods: {
     onSubmit() {
+      // 重置分页参数
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = 10
       this.listQuery.dictId = this.dictId
       getDetailById(this.listQuery).then(response => {
         this.tableList = response.data
+        this.total = response.data.total
       })
     },
     handleResetSearch() {

@@ -7,8 +7,8 @@
         </el-form-item>
         <el-form-item label="任务状态">
           <el-select v-model="listQuery.isPause" placeholder="任务状态">
-            <el-option label="暂停" value="0" />
-            <el-option label="启用" value="1" />
+            <el-option label="暂停" :value="1" />
+            <el-option label="启用" :value="0" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -284,8 +284,12 @@ export default {
       this.listQueryLog = Object.assign({}, listQueryLog)
     },
     onSubmit() {
+      // 重置分页参数
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = 10
       getTaskList(this.listQuery).then(response => {
         this.tableList = response.data.list
+        this.total = response.data.total
       })
     },
     handleResetSearch() {

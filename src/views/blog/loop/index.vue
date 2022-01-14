@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="轮播图标题">
-          <el-input v-model.trim="listQuery.name" placeholder="轮播图标题" />
+          <el-input v-model.trim="listQuery.title" placeholder="轮播图标题" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -150,8 +150,12 @@ export default {
   },
   methods: {
     onSubmit() {
+      // 重置分页参数
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = 10
       getLoopList(this.listQuery).then(response => {
         this.tableList = response.data.list
+        this.total = response.data.total
       })
     },
     handleResetSearch() {

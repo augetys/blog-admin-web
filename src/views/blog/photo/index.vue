@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="照片描述">
-          <el-input v-model.trim="listQuery.content" placeholder="照片描述" />
+          <el-input v-model.trim="listQuery.tip" placeholder="照片描述" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
@@ -176,8 +176,12 @@ export default {
       this.$refs['photoForm'].clearValidate('file')
     },
     onSubmit() {
+      // 重置分页参数
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = 10
       getPhotoList(this.listQuery).then(response => {
         this.tableList = response.data.list
+        this.total = response.data.total
       })
     },
     handleResetSearch() {

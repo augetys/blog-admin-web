@@ -146,8 +146,12 @@ export default {
       }
     },
     onSubmit() {
+      // 重置分页参数
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = 10
       getFileList(this.listQuery).then(response => {
         this.tableList = response.data.list
+        this.total = response.data.total
       })
     },
     handleResetSearch() {

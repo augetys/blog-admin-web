@@ -115,8 +115,12 @@ export default {
   },
   methods: {
     onSubmit() {
+      // 重置分页参数
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = 10
       getTagList(this.listQuery).then(response => {
         this.tableList = response.data.list
+        this.total = response.data.total
       })
     },
     handleResetSearch() {
