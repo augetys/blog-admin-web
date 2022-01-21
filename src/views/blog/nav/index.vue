@@ -106,14 +106,13 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 1 到 8 个字符', trigger: 'blur' }
+          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
         path: [
           { required: true, message: '请输入跳转路由', trigger: 'blur' }
         ],
         icon: [
-          { required: true, message: '请输入图标', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+          { required: true, message: '请输入图标', trigger: 'blur' }
         ],
         sort: [
           { required: true, message: '请输入排序', trigger: 'blur' },

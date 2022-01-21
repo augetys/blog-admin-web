@@ -101,7 +101,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入分类名称', trigger: 'blur' },
-          { min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
         ],
         content: [
           { required: true, message: '请输入分类介绍', trigger: 'blur' },

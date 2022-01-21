@@ -119,11 +119,11 @@ export default {
       rules: {
         label: [
           { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 1 到 8 个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
         ],
         value: [
           { required: true, message: '请输入值', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
         ],
         sort: [
           { required: true, message: '请输入排序', trigger: 'blur' },

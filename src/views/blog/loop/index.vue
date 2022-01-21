@@ -131,11 +131,11 @@ export default {
         ],
         targetUrl: [
           { required: true, message: '请输入跳转地址', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+          { min: 2, max: 140, message: '跳转地址过长', trigger: 'blur' }
         ],
         imageUrl: [
           { required: true, message: '请输入图片地址', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur' }
+          { min: 2, max: 140, message: '图片地址过长', trigger: 'blur' }
         ],
         sort: [
           { required: true, message: '请输入排序', trigger: 'blur' },

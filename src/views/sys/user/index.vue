@@ -177,14 +177,14 @@ export default {
       rules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
         ],
         email: [
           { required: true, validator: checkEmail, trigger: 'blur' }
         ],
         nickName: [
           { required: true, message: '请输入昵称', trigger: 'blur' },
-          { min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
         ]
       }
     }

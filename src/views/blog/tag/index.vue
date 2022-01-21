@@ -100,7 +100,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入标签名称', trigger: 'blur' },
-          { min: 2, max: 140, message: '长度在 1 到 8 个字符', trigger: 'blur' }
+          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
         sort: [
           { required: true, message: '请输入标签排序', trigger: 'blur' },
