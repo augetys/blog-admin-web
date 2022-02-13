@@ -5,6 +5,23 @@
         <el-form-item label="网址名称">
           <el-input v-model.trim="listQuery.name" placeholder="网址名称" />
         </el-form-item>
+        <el-form-item label="分类名称">
+          <el-select
+            v-model="listQuery.category"
+            style="width: 140px"
+            filterable
+            clearable
+            reserve-keyword
+            placeholder="请输入分类名"
+          >
+            <el-option
+              v-for="item in blogWebisteDictList"
+              :key="item.id"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit()">搜索</el-button>
           <el-button type="primary" icon="el-icon-edit" @click="handleAdd()">添加</el-button>
@@ -21,7 +38,7 @@
         </el-table-column>
         <el-table-column prop="name" label="网址名称" align="center" />
         <el-table-column prop="url" label="url" align="center" show-overflow-tooltip />
-        <el-table-column prop="category" label="网址类别" align="center" />
+        <el-table-column prop="categoryName" label="网址类别" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -81,10 +98,12 @@
 <script>
 
 import { createWebsite, deleteWebsite, getWebsiteList, updateWebsite } from '@/api/website'
+import { getDetailByNames } from '@/api/dict'
 
 const listQuery = {
   pageNum: 1,
   pageSize: 10,
+  category: null,
   content: null
 }
 const defaultWebsite = {
@@ -105,6 +124,7 @@ export default {
       website: Object.assign({}, defaultWebsite),
       isEdit: false,
       dialogVisible: false,
+      blogWebisteDictList: [],
       rules: {
         name: [
           { required: true, message: '请输入网站名称', trigger: 'blur' },
@@ -118,6 +138,7 @@ export default {
   },
   created() {
     this.getList()
+    this.getDictList()
   },
   methods: {
     onSubmit() {
@@ -127,6 +148,13 @@ export default {
       getWebsiteList(this.listQuery).then(response => {
         this.tableList = response.data.list
         this.total = response.data.total
+      })
+    },
+    getDictList() {
+      const dictTypeList = ['blog_website']
+      getDetailByNames(dictTypeList).then(response => {
+        const dictMap = response.data
+        this.blogWebisteDictList = dictMap.blog_website
       })
     },
     handleResetSearch() {
