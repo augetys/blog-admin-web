@@ -186,8 +186,8 @@
           :page-sizes="[10,50,100]"
           :total="totalLog"
           style="padding-top:10px"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          @size-change="handleLogSizeChange"
+          @current-change="handleLogCurrentChange"
         />
       </div>
 
@@ -344,6 +344,15 @@ export default {
         })
         this.getList()
       })
+    },
+    handleLogSizeChange(val) {
+      this.listQuery.pageNum = 1
+      this.listQuery.pageSize = val
+      this.getListLog()
+    },
+    handleLogCurrentChange(val) {
+      this.listQuery.pageNum = val
+      this.getListLog()
     },
     handleSizeChange(val) {
       this.listQuery.pageNum = 1

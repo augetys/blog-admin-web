@@ -142,7 +142,7 @@ export default {
       photo: Object.assign({}, defaultPhoto),
       isEdit: false,
       dialogVisible: false,
-      uploadData: { name: null, bucket: 'hopelittle' },
+      uploadData: { name: '', bucket: 'hopelittle' },
       rules: {
         tip: [
           { required: true, message: '请输入照片描述', trigger: 'blur' },
