@@ -39,6 +39,7 @@
         <el-table-column prop="name" label="网址名称" align="center" />
         <el-table-column prop="url" label="url" align="center" show-overflow-tooltip />
         <el-table-column prop="categoryName" label="网址类别" align="center" />
+        <el-table-column prop="sort" label="排序" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -74,16 +75,21 @@
           <el-input v-model="website.name" style="width: 350px" />
         </el-form-item>
 
+        <el-form-item label="网站描述：" prop="description">
+          <el-input v-model="website.description" style="width: 350px" />
+        </el-form-item>
+
+        <el-form-item label="网站排序：" prop="sort">
+          <el-input v-model.number="website.sort" style="width: 350px" />
+        </el-form-item>
+
         <el-form-item label="网站地址：" prop="url">
           <el-input v-model="website.url" style="width: 350px" />
         </el-form-item>
 
-        <el-form-item label="网站地址：" prop="category">
+        <el-form-item label="网站分类：" prop="category">
           <el-radio-group v-model="website.category">
-            <el-radio :label="1">常用网址</el-radio>
-            <el-radio :label="2">学习</el-radio>
-            <el-radio :label="3">资源</el-radio>
-            <el-radio :label="4">影视</el-radio>
+            <el-radio v-for="item in blogWebisteDictList" :key="item.value" class="website-dict" :value="item.value" :label="parseInt(item.value)">{{ item.label }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -110,6 +116,8 @@ const defaultWebsite = {
   id: null,
   name: null,
   url: null,
+  description: null,
+  sort: null,
   category: null
 }
 
@@ -129,6 +137,11 @@ export default {
         name: [
           { required: true, message: '请输入网站名称', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+        ],
+        sort: [
+          { required: true, message: '请输入排序', trigger: 'blur' },
+          { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' },
+          { pattern: /^(?:[1-9]\d{0,3}|0)$/, message: '范围在0-9999', trigger: 'blur' }
         ],
         url: [
           { required: true, message: '请输入网站地址', trigger: 'blur' }
@@ -251,5 +264,8 @@ export default {
 </script>
 
 <style scoped>
-
+  .website-dict{
+    width: 25%;
+    line-height: 30px;
+  }
 </style>
