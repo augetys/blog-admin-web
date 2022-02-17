@@ -66,6 +66,12 @@
         <el-form-item label="排序：" prop="sort">
           <el-input v-model.number="nav.sort" style="width: 250px" />
         </el-form-item>
+        <el-form-item label="是否打开新窗口">
+          <el-select v-model="nav.target" placeholder="是否打开新窗口">
+            <el-option label="是" value="_blank" />
+            <el-option label="否" value="" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
@@ -89,7 +95,8 @@ const defaultNav = {
   name: null,
   icon: null,
   sort: null,
-  path: null
+  path: null,
+  target: null
 }
 
 export default {
