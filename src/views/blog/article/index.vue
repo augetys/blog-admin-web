@@ -65,7 +65,11 @@
             {{ scope.$index+1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="标题" align="center" show-overflow-tooltip />
+        <el-table-column prop="title" label="标题" align="center" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-link :href="'https://www.choot.top/article/'+`${scope.row.id}`" target="_blank" :underline="false" type="primary">{{ scope.row.title }}</el-link>
+          </template>
+        </el-table-column>
         <el-table-column prop="author" label="作者" align="center" />
         <el-table-column prop="isOriginal" label="是否原创" align="center">
           <template slot-scope="scope">
