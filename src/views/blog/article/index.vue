@@ -82,6 +82,7 @@
             <span>{{ scope.row.categoryName }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="sort" label="排序" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -145,6 +146,15 @@
             </el-form-item>
           </el-col>
         </el-row>
+
+        <el-row>
+          <el-col :span="6.5">
+            <el-form-item label="排序" :label-width="lineLabelWidth" prop="sort">
+              <el-input v-model.number="blog.sort" style="width: 250px" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-row>
           <el-col :span="6.5">
             <el-form-item label="分类" :label-width="formLabelWidth" prop="categoryId">
@@ -229,6 +239,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+
         </el-row>
 
         <el-form-item v-if="blog.isOriginal===0" label="作者" :label-width="formLabelWidth" prop="articleAuthor">
