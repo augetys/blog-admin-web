@@ -39,6 +39,7 @@
         <el-table-column prop="name" label="网址名称" align="center" />
         <el-table-column prop="url" label="url" align="center" show-overflow-tooltip />
         <el-table-column prop="categoryName" label="网址类别" align="center" />
+        <el-table-column prop="description" label="网站描述" align="center" show-overflow-tooltip />
         <el-table-column prop="sort" label="排序" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
@@ -124,6 +125,18 @@ const defaultWebsite = {
 export default {
   name: 'Index',
   data() {
+    const validateRadio = (rule, value, callback) => {
+      if (value) {
+        // 当值为0的时候当做没选择
+        if (value === 0) {
+          callback(new Error('请选择分类'))
+        } else {
+          callback()
+        }
+      } else {
+        callback(new Error('请选择分类'))
+      }
+    }
     return {
       listQuery: Object.assign({}, listQuery),
       tableList: null,
@@ -137,6 +150,9 @@ export default {
         name: [
           { required: true, message: '请输入网站名称', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+        ],
+        category: [
+          { validator: validateRadio, trigger: 'blur' }
         ],
         sort: [
           { required: true, message: '请输入排序', trigger: 'blur' },
