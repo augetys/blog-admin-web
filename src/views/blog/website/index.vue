@@ -5,6 +5,9 @@
         <el-form-item label="网址名称">
           <el-input v-model.trim="listQuery.name" placeholder="网址名称" />
         </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model.trim="listQuery.description" placeholder="描述" />
+        </el-form-item>
         <el-form-item label="分类名称">
           <el-select
             v-model="listQuery.category"
@@ -39,6 +42,7 @@
         <el-table-column prop="name" label="网址名称" align="center" />
         <el-table-column prop="url" label="url" align="center" show-overflow-tooltip />
         <el-table-column prop="categoryName" label="网址类别" align="center" />
+        <el-table-column prop="description" label="网址描述" align="center" />
         <el-table-column prop="sort" label="排序" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column label="操作" align="center">
