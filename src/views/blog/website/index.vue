@@ -5,6 +5,9 @@
         <el-form-item label="网址名称">
           <el-input v-model.trim="listQuery.name" placeholder="网址名称" />
         </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model.trim="listQuery.description" placeholder="描述" />
+        </el-form-item>
         <el-form-item label="分类名称">
           <el-select
             v-model="listQuery.category"
@@ -124,6 +127,18 @@ const defaultWebsite = {
 export default {
   name: 'Index',
   data() {
+    const validateRadio = (rule, value, callback) => {
+      if (value) {
+        // 当值为0的时候当做没选择
+        if (value === 0) {
+          callback(new Error('请选择分类'))
+        } else {
+          callback()
+        }
+      } else {
+        callback(new Error('请选择分类'))
+      }
+    }
     return {
       listQuery: Object.assign({}, listQuery),
       tableList: null,
@@ -142,6 +157,9 @@ export default {
           { required: true, message: '请输入排序', trigger: 'blur' },
           { type: 'number', required: true, message: '排序必须为数字', trigger: 'blur' },
           { pattern: /^(?:[1-9]\d{0,3}|0)$/, message: '范围在0-9999', trigger: 'blur' }
+        ],
+        category: [
+          { validator: validateRadio, trigger: 'blur' }
         ],
         url: [
           { required: true, message: '请输入网站地址', trigger: 'blur' }
